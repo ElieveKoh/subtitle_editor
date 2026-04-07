@@ -101,6 +101,7 @@ with tab1:
                         target_url = f"{base_url}/sub_{lang}.vtt"
                         try:
                             res = requests.get(target_url, timeout=10)
+                            res.encoding = 'utf-8'
                             if res.status_code == 200:
                                 vtt_text = res.text
                                 is_valid, msg = validate_vtt(vtt_text)
