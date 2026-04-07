@@ -82,7 +82,7 @@ with tab1:
     url_input = st.text_input("MP4 URL 입력:", placeholder="https://.../orig.mix-stream1.mp4")
     
     # 기본 언어 리스트
-    default_langs =['en', 'ja', 'zh-cn', 'zh-tw', 'th', 'id', 'vi', 'es', 'fr', 'pt', 'fil', 'ko']
+    default_langs =['en', 'ja', 'zh-CN', 'zh-TW', 'th', 'id', 'vi', 'es', 'fr', 'pt', 'fil', 'ko']
     selected_langs = st.multiselect("다운로드할 언어 선택", default_langs, default=default_langs)
 
     if st.button("🚀 자막 다운로드 및 SRT 변환 실행"):
