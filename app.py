@@ -82,12 +82,12 @@ def process_test_subtitles(vtt_content, test_min, action_type):
         # 기준 시간(threshold_ms) 이전이면 처리
         if start_ms < threshold_ms:
             if action_type == "완전 삭제 (기본값)":
-                continue # 블록 전체를 날림
+                continue  # 블록 전체를 날림
             else:
                 # 점(.)으로 0.1초 노출
                 end_ms = start_ms + 100
                 new_tc = f"{ms_to_vtt_tc(start_ms)} --> {ms_to_vtt_tc(end_ms)}"
-                new_block_lines = lines[:tc_idx] +[new_tc, "."]
+                new_block_lines = lines[:tc_idx] + [new_tc, "."]
                 new_blocks.append("\n".join(new_block_lines))
         else:
             new_blocks.append(block)
@@ -95,7 +95,7 @@ def process_test_subtitles(vtt_content, test_min, action_type):
     return "\n\n".join(new_blocks) + "\n\n"
 
 # ==========================================
-# 3.[기능 2] 구간 자막 교체 및 밀어넣기 로직
+# 3. [기능 2] 구간 자막 교체 및 밀어넣기 로직
 # ==========================================
 def replace_srt_section(srt_content, start_str, end_str, new_text):
     """ 특정 시간 구간 내의 자막을 비우고, 새로 작성한 텍스트로 등분하여 채우는 함수 """
@@ -109,7 +109,7 @@ def replace_srt_section(srt_content, start_str, end_str, new_text):
     new_lines =[line.strip() for line in new_text.strip().split('\n') if line.strip()]
     
     blocks = re.split(r'\n\s*\n', srt_content.strip())
-    before_blocks = []
+    before_blocks =[]
     after_blocks =[]
     
     # 원본 자막 분류 (구간 이전 vs 구간 이후)
@@ -181,7 +181,7 @@ def vtt_to_srt_str(vtt_content):
 
 def srt_to_vtt_str(srt_content):
     blocks = re.split(r'\n\s*\n', srt_content.strip())
-    vtt_lines =["WEBVTT\n"]
+    vtt_lines = ["WEBVTT\n"]
     for block in blocks:
         lines = block.split('\n')
         if len(lines) < 3: continue
@@ -225,15 +225,23 @@ with tab1:
     url_input = st.text_input("MP4 URL 입력:", placeholder="https://.../orig.mix-stream1.mp4")
     
     st.markdown("##### 🧹 옵션: 테스트 자막 정리 (다운로드 시 자동 적용)")
-    col1, col2 = st.columns(2)
-    with col1:
-        enable_cleanup = st.checkbox("초반 자막 지우기 기능 사용", value=True)
-        test_min = st.number_input("기준 시간 (분 단위) - 이 시간 이전의 자막을 처리:", min_value=0.0, value=20.0, step=1.0)
-    with col2:
-        action_type = st.radio("처리 방식 선택:",["완전 삭제 (기본값)", "점(.)으로 남기기 (0.1초 노출)"])
+    
+    # 체크박스 상태에 따라 하위 메뉴 숨김/표시 처리
+    enable_cleanup = st.checkbox("초반 자막 지우기 기능 사용", value=True)
+    
+    if enable_cleanup:
+        col1, col2 = st.columns(2)
+        with col1:
+            test_min = st.number_input("기준 시간 (분 단위) - 이 시간 이전의 자막을 처리:", min_value=0.0, value=20.0, step=1.0)
+        with col2:
+            action_type = st.radio("처리 방식 선택:",["완전 삭제 (기본값)", "점(.)으로 남기기 (0.1초 노출)"])
+    else:
+        test_min = 0.0
+        action_type = "완전 삭제 (기본값)"
     
     st.markdown("---")
-    default_langs =['en', 'ja', 'zh-cn', 'zh-tw', 'th', 'id', 'vi', 'es', 'fr', 'pt', 'fil', 'ko']
+    # 대소문자 정확하게 수정 (zh-CN, zh-TW)
+    default_langs =['en', 'ja', 'zh-CN', 'zh-TW', 'th', 'id', 'vi', 'es', 'fr', 'pt', 'fil', 'ko']
     selected_langs = st.multiselect("다운로드할 언어 선택", default_langs, default=default_langs)
 
     if st.button("🚀 실행: 다운로드 & 전처리 & SRT 변환", type="primary"):
@@ -250,14 +258,14 @@ with tab1:
                         target_url = f"{base_url}/sub_{lang}.vtt"
                         try:
                             res = requests.get(target_url, timeout=10)
-                            res.encoding = 'utf-8' # 한/중/일어 깨짐 방지!
+                            res.encoding = 'utf-8'  # 한/중/일어 깨짐 방지!
                             
                             if res.status_code == 200:
                                 vtt_text = res.text
                                 is_valid, msg = validate_vtt(vtt_text)
                                 
                                 if is_valid:
-                                    # 1. 초반 테스트 자막 컷팅
+                                    # 1. 초반 테스트 자막 컷팅 (체크박스가 켜져있을 때만)
                                     if enable_cleanup:
                                         vtt_text = process_test_subtitles(vtt_text, test_min, action_type)
                                     
