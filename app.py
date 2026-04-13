@@ -221,7 +221,7 @@ with tab1:
     for i in range(st.session_state.link_count):
         col1, col2 = st.columns([2, 1])
         with col1:
-            u = st.text_input(f"MP4 URL #{i+1}", key=f"url_{i}", placeholder="https://.../orig.mix-stream1.mp4")
+            u = st.text_input(f"MP4 URL #{i+1}", key=f"url_{i}", placeholder="https://.../stream1.mp4")
         with col2:
             p = st.text_input(f"파일명 구조 #{i+1}", key=f"prefix_{i}", placeholder=f"예: 20260000_ART_day{i+1}")
         links_data.append((u, p))
