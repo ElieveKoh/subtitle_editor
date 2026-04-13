@@ -223,7 +223,7 @@ with tab1:
         with col1:
             u = st.text_input(f"MP4 URL #{i+1}", key=f"url_{i}", placeholder="https://.../orig.mix-stream1.mp4")
         with col2:
-            p = st.text_input(f"파일명 구조 #{i+1}", key=f"prefix_{i}", placeholder=f"예: 20260413_BTS_day{i+1}")
+            p = st.text_input(f"파일명 구조 #{i+1}", key=f"prefix_{i}", placeholder=f"예: 20260000_ART_day{i+1}")
         links_data.append((u, p))
         
     st.button("➕ 링크 입력칸 추가", on_click=add_link)
