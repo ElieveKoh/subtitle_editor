@@ -33,6 +33,7 @@ TEXTS = {
         "t1_radio_2": "점(.)으로 남기기 (0.1초 노출)",
         
         "t1_lang_label": "다운로드할 언어 선택",
+        "t1_team_share_label": "자막팀 공유 폴더에 포함할 언어 (사람이 직접 작업하는 언어)",
         "t1_btn_run": "🚀 일괄 다운로드 및 변환 실행",
         
         "t1_err_nolink": "최소 1개 이상의 URL과 파일명을 정확히 입력해주세요.",
@@ -95,6 +96,7 @@ TEXTS = {
         "t1_radio_2": "Replace with dot (.) for 0.1s",
         
         "t1_lang_label": "Select languages to download",
+        "t1_team_share_label": "Languages to include in Team Share folder (human-edited languages)",
         "t1_btn_run": "🚀 Run Batch Download & Convert",
         
         "t1_err_nolink": "Please enter at least one valid URL and filename prefix.",
@@ -369,10 +371,11 @@ with tab1:
         action_type = t["t1_radio_1"]
     
     st.markdown("---")
-    default_langs =['en', 'ja', 'zh-CN', 'zh-TW', 'th', 'id', 'vi', 'es', 'fr', 'pt', 'fil', 'ko']
+    default_langs =['en', 'ja', 'zh-CN', 'zh-TW', 'th', 'id', 'vi', 'es', 'fr', 'pt', 'fil', 'ko', 'ar', 'de', 'it', 'ru']
     selected_langs = st.multiselect(t["t1_lang_label"], default_langs, default=default_langs)
-    
-    team_share_langs =['en', 'ja', 'zh-CN', 'ko']
+
+    default_team_share_langs =['en', 'ja', 'zh-CN', 'ko']
+    team_share_langs = st.multiselect(t["t1_team_share_label"], default_langs, default=default_team_share_langs)
 
     if st.button(t["t1_btn_run"], type="primary"):
         valid_links =[(u.strip(), p.strip()) for u, p in links_data if u.strip() and p.strip()]
