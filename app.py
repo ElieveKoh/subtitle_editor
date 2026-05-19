@@ -66,7 +66,20 @@ TEXTS = {
         "t4_err_time": "시간 형식을 다시 확인해주세요. (예: 10:00 또는 00:10:00,000)",
         "t4_success": "✅ 자막 교체 및 인덱스 정렬 완료!",
         "t4_err_input": "원본 SRT 파일, 시작/종료 시간, 추가할 자막을 모두 입력해주세요.",
-        
+
+        # 탭 4 일괄 처리 모드
+        "t4_mode_lbl": "처리 모드",
+        "t4_mode_single": "단일 파일 (기존)",
+        "t4_mode_batch": "일괄 처리 (기준 언어 + 자동번역 언어)",
+        "t4_batch_info": "기준 언어 1개와 다른 언어들을 함께 올린 후, 동일한 시간 범위에 대해 언어별 번역문을 각각 입력하세요. 파일명 마지막 `_언어코드.srt` 패턴으로 언어를 자동 감지합니다 (예: `..._en.srt`).",
+        "t4_ref_upload": "기준 언어 SRT 업로드 (1개)",
+        "t4_target_upload": "자동번역 언어 SRT 업로드 (여러 개)",
+        "t4_lang_text_lbl": "[{lang}] {filename} - 새 자막 텍스트 (줄바꿈으로 분할)",
+        "t4_btn_batch_run": "✨ 일괄 적용 & ZIP 다운로드",
+        "t4_batch_success": "✅ {cnt}개 파일 처리 완료",
+        "t4_err_batch_nofile": "최소 한 개 이상의 SRT 파일을 업로드해주세요.",
+        "t4_err_batch_notext": "각 언어 SRT 파일마다 새 자막 텍스트를 입력해야 합니다.",
+
         # 검증 에러 메시지
         "err_vtt_header": "WEBVTT 헤더 누락",
         "err_tc": "타임코드(-->) 없음"
@@ -129,7 +142,20 @@ TEXTS = {
         "t4_err_time": "Please check the time format. (e.g., 10:00 or 00:10:00,000)",
         "t4_success": "✅ Subtitle override & index realignment complete!",
         "t4_err_input": "Please provide the SRT file, start/end times, and the new subtitles.",
-        
+
+        # Tab 4 batch mode
+        "t4_mode_lbl": "Processing mode",
+        "t4_mode_single": "Single file (legacy)",
+        "t4_mode_batch": "Batch (reference + auto-translated languages)",
+        "t4_batch_info": "Upload one reference-language SRT and any number of other-language SRTs, then enter the translated text for each language. Language is auto-detected from filename pattern `..._<lang>.srt` (e.g., `..._en.srt`).",
+        "t4_ref_upload": "Reference language SRT (1 file)",
+        "t4_target_upload": "Auto-translated language SRTs (multiple)",
+        "t4_lang_text_lbl": "[{lang}] {filename} - New subtitles (line break = block)",
+        "t4_btn_batch_run": "✨ Apply Batch & Download ZIP",
+        "t4_batch_success": "✅ {cnt} files processed",
+        "t4_err_batch_nofile": "Please upload at least one SRT file.",
+        "t4_err_batch_notext": "Each language SRT requires new subtitle text.",
+
         # Validation Errors
         "err_vtt_header": "Missing WEBVTT header",
         "err_tc": "Missing timecode (-->)"
@@ -454,36 +480,117 @@ with tab3:
             st.download_button(btn_txt, data=srt_to_vtt_str(content), file_name=new_name, type="primary")
 
 # ----------------- TAB 4: 구간 자막 교체 & 밀어넣기 -----------------
+def detect_lang_from_filename(name):
+    stem = re.sub(r'\.srt$', '', name, flags=re.IGNORECASE)
+    parts = stem.rsplit('_', 1)
+    return parts[-1] if len(parts) > 1 and parts[-1] else "unknown"
+
 with tab4:
     st.subheader(t["t4_sub"])
-    st.info(t["t4_info"])
-    
-    uploaded_edit = st.file_uploader(t["t4_upload"], type=['srt'])
-    
-    col1, col2 = st.columns([1, 2])
-    with col1:
-        start_time_input = st.text_input(t["t4_start_lbl"], value="10:00")
-        end_time_input = st.text_input(t["t4_end_lbl"], value="11:00")
-        
-    with col2:
-        new_subtitles = st.text_area(t["t4_text_lbl"], height=200, placeholder=t["t4_text_ph"])
-        
-    if st.button(t["t4_btn_run"], type="primary"):
-        if uploaded_edit and start_time_input and end_time_input:
-            srt_content = uploaded_edit.read().decode("utf-8")
-            success, result = replace_srt_section(srt_content, start_time_input, end_time_input, new_subtitles)
-            
-            if success:
-                st.success(t["t4_success"])
-                dl_name = f"edited_{uploaded_edit.name}"
-                st.download_button(
-                    label=t["t2_btn_dl"].format(name=dl_name),
-                    data=result,
-                    file_name=dl_name,
-                    mime="text/plain",
-                    type="primary"
-                )
+
+    mode = st.radio(t["t4_mode_lbl"], [t["t4_mode_batch"], t["t4_mode_single"]], horizontal=True)
+
+    if mode == t["t4_mode_single"]:
+        st.info(t["t4_info"])
+
+        uploaded_edit = st.file_uploader(t["t4_upload"], type=['srt'])
+
+        col1, col2 = st.columns([1, 2])
+        with col1:
+            start_time_input = st.text_input(t["t4_start_lbl"], value="10:00")
+            end_time_input = st.text_input(t["t4_end_lbl"], value="11:00")
+
+        with col2:
+            new_subtitles = st.text_area(t["t4_text_lbl"], height=200, placeholder=t["t4_text_ph"])
+
+        if st.button(t["t4_btn_run"], type="primary"):
+            if uploaded_edit and start_time_input and end_time_input:
+                srt_content = uploaded_edit.read().decode("utf-8")
+                success, result = replace_srt_section(srt_content, start_time_input, end_time_input, new_subtitles)
+
+                if success:
+                    st.success(t["t4_success"])
+                    dl_name = f"edited_{uploaded_edit.name}"
+                    st.download_button(
+                        label=t["t2_btn_dl"].format(name=dl_name),
+                        data=result,
+                        file_name=dl_name,
+                        mime="text/plain",
+                        type="primary"
+                    )
+                else:
+                    st.error(result)
             else:
-                st.error(result)
-        else:
-            st.warning(t["t4_err_input"])
+                st.warning(t["t4_err_input"])
+    else:
+        st.info(t["t4_batch_info"])
+
+        ref_file = st.file_uploader(t["t4_ref_upload"], type=['srt'], accept_multiple_files=False, key="batch_ref")
+        target_files = st.file_uploader(t["t4_target_upload"], type=['srt'], accept_multiple_files=True, key="batch_targets")
+
+        col1, col2 = st.columns([1, 1])
+        with col1:
+            batch_start = st.text_input(t["t4_start_lbl"], value="10:00", key="batch_start")
+        with col2:
+            batch_end = st.text_input(t["t4_end_lbl"], value="11:00", key="batch_end")
+
+        all_files = []
+        if ref_file is not None:
+            all_files.append(("ref", ref_file))
+        if target_files:
+            seen_names = {ref_file.name} if ref_file is not None else set()
+            for tf in target_files:
+                if tf.name in seen_names: continue
+                seen_names.add(tf.name)
+                all_files.append(("target", tf))
+
+        lang_texts = {}
+        if all_files:
+            st.markdown("---")
+            for kind, f in all_files:
+                lang = detect_lang_from_filename(f.name)
+                key = f"batch_text_{f.name}"
+                lang_texts[f.name] = (lang, f, st.text_area(
+                    t["t4_lang_text_lbl"].format(lang=lang, filename=f.name),
+                    height=140,
+                    placeholder=t["t4_text_ph"],
+                    key=key,
+                ))
+
+        if st.button(t["t4_btn_batch_run"], type="primary", key="batch_run"):
+            if not all_files:
+                st.warning(t["t4_err_batch_nofile"])
+            elif not batch_start or not batch_end:
+                st.warning(t["t4_err_input"])
+            elif any(not txt.strip() for (_lang, _f, txt) in lang_texts.values()):
+                st.warning(t["t4_err_batch_notext"])
+            else:
+                zip_buffer = io.BytesIO()
+                processed = 0
+                errors = []
+                with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+                    for fname, (lang, f, txt) in lang_texts.items():
+                        try:
+                            f.seek(0)
+                            content = f.read().decode("utf-8")
+                            ok, result = replace_srt_section(content, batch_start, batch_end, txt)
+                            if ok:
+                                zf.writestr(f"edited_{fname}", result)
+                                processed += 1
+                            else:
+                                errors.append(f"{fname}: {result}")
+                        except Exception as e:
+                            errors.append(f"{fname}: {e}")
+
+                if errors:
+                    for err in errors:
+                        st.error(err)
+                if processed > 0:
+                    st.success(t["t4_batch_success"].format(cnt=processed))
+                    st.download_button(
+                        label=t["t1_btn_download_zip"],
+                        data=zip_buffer.getvalue(),
+                        file_name="edited_subtitles.zip",
+                        mime="application/zip",
+                        type="primary",
+                    )
