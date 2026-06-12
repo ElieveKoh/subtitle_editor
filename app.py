@@ -14,7 +14,8 @@ TEXTS = {
         "tab2": "📁 2. 수동 VTT -> SRT",
         "tab3": "🔙 3. 최종 SRT -> VTT",
         "tab4": "✂️ 4. 구간 자막 덮어쓰기",
-        
+        "tab5": "🕐 5. 전체 자막 시프트",
+
         # 탭 1 (다운로드)
         "t1_sub": "MP4 주소로 다국어 자막 복수 다운로드",
         "t1_info": "➕ 버튼을 눌러 작업을 원하는 만큼 추가하세요. 언어별 자막을 설정한 파일명 규칙으로 한 번에 묶어줍니다.",
@@ -44,7 +45,15 @@ TEXTS = {
         "t1_success_all": "🎉 총 {cnt}개의 파일이 성공적으로 처리되었습니다!",
         "t1_btn_download_zip": "📦 완성된 전체 패키지 다운로드 (.zip)",
         "t1_share_folder": "자막팀공유",
-        
+
+        # 탭 1 + 탭 5 공용: 전체 시프트
+        "shift_sign_lbl": "방향",
+        "shift_sign_plus": "➕ 미루기 (뒤로 / 시간 증가)",
+        "shift_sign_minus": "➖ 당기기 (앞으로 / 시간 감소)",
+        "shift_offset_lbl": "이동 시간 (HH:MM:SS)",
+        "t1_shift_title": "##### ⏱️ 옵션: 전체 자막 시프트 (다운로드 시 자동 적용)",
+        "t1_chk_shift": "전체 타임코드 시프트 사용",
+
         # 탭 2 & 3 (수동 변환)
         "t2_sub": "📁 로컬 VTT 파일을 SRT로 수동 변환",
         "t2_upload": "VTT 파일 업로드",
@@ -80,6 +89,15 @@ TEXTS = {
         "t4_err_batch_nofile": "최소 한 개 이상의 SRT 파일을 업로드해주세요.",
         "t4_err_batch_notext": "각 언어 SRT 파일마다 새 자막 텍스트를 입력해야 합니다.",
 
+        # 탭 5 (전체 시프트)
+        "t5_sub": "🕐 자막 전체 타임코드를 한 번에 당기거나 미루기",
+        "t5_info": "SRT/VTT 파일을 올린 뒤 방향(+/-)과 이동 시간을 정하면 전체 자막이 한꺼번에 이동합니다. 당겨서 0초 이전으로 밀려난 자막은 삭제됩니다. 업로드한 파일 포맷 그대로 다운로드됩니다.",
+        "t5_upload": "시프트할 SRT/VTT 파일 업로드 (여러 개 가능)",
+        "t5_btn_run": "🚀 시프트 적용 & 다운로드",
+        "t5_success": "✅ {cnt}개 파일 시프트 완료 ({sign}{offset})",
+        "t5_err_nofile": "최소 한 개 이상의 자막 파일을 업로드해주세요.",
+        "t5_err_offset": "이동 시간을 HH:MM:SS 형식으로 0보다 크게 입력해주세요. (예: 01:00:00)",
+
         # 검증 에러 메시지
         "err_vtt_header": "WEBVTT 헤더 누락",
         "err_tc": "타임코드(-->) 없음"
@@ -90,7 +108,8 @@ TEXTS = {
         "tab2": "📁 2. Manual VTT -> SRT",
         "tab3": "🔙 3. Final SRT -> VTT",
         "tab4": "✂️ 4. Override Subtitle Section",
-        
+        "tab5": "🕐 5. Global Time Shift",
+
         # Tab 1 (Download)
         "t1_sub": "Batch Download Multilingual Subtitles via MP4 URLs",
         "t1_info": "Click ➕ to add multiple tasks. Subtitles for each language will be bundled automatically based on the filename prefix.",
@@ -120,7 +139,15 @@ TEXTS = {
         "t1_success_all": "🎉 A total of {cnt} files processed successfully!",
         "t1_btn_download_zip": "📦 Download Complete Package (.zip)",
         "t1_share_folder": "Team_Share",
-        
+
+        # Tab 1 + Tab 5 shared: global shift
+        "shift_sign_lbl": "Direction",
+        "shift_sign_plus": "➕ Push later (delay / increase time)",
+        "shift_sign_minus": "➖ Pull earlier (advance / decrease time)",
+        "shift_offset_lbl": "Shift amount (HH:MM:SS)",
+        "t1_shift_title": "##### ⏱️ Option: Global Time Shift (Applied on Download)",
+        "t1_chk_shift": "Enable global timecode shift",
+
         # Tab 2 & 3 (Manual Convert)
         "t2_sub": "📁 Manually convert local VTT to SRT",
         "t2_upload": "Upload VTT file(s)",
@@ -155,6 +182,15 @@ TEXTS = {
         "t4_batch_success": "✅ {cnt} files processed",
         "t4_err_batch_nofile": "Please upload at least one SRT file.",
         "t4_err_batch_notext": "Each language SRT requires new subtitle text.",
+
+        # Tab 5 (Global Shift)
+        "t5_sub": "🕐 Shift all subtitle timecodes at once",
+        "t5_info": "Upload SRT/VTT files, pick a direction (+/-) and amount, and every subtitle moves together. Subtitles pushed before 0s are removed. Output keeps each file's original format.",
+        "t5_upload": "Upload SRT/VTT files to shift (multiple allowed)",
+        "t5_btn_run": "🚀 Apply Shift & Download",
+        "t5_success": "✅ {cnt} files shifted ({sign}{offset})",
+        "t5_err_nofile": "Please upload at least one subtitle file.",
+        "t5_err_offset": "Enter a shift amount greater than 0 in HH:MM:SS format. (e.g., 01:00:00)",
 
         # Validation Errors
         "err_vtt_header": "Missing WEBVTT header",
@@ -301,6 +337,48 @@ def replace_srt_section(srt_content, start_str, end_str, new_text):
     return True, "\n".join(final_srt_lines)
 
 # ==========================================
+# 3-1. [기능 3] 전체 자막 타임코드 시프트 로직
+# ==========================================
+def parse_offset_to_ms(sign, hms_str):
+    """부호(+/-)와 'HH:MM:SS' 문자열을 받아 밀리초 오프셋(부호 포함)으로 변환."""
+    base = parse_tc_to_ms(hms_str)
+    return -base if sign == "-" else base
+
+def shift_subtitle_content(content, offset_ms, fmt):
+    """자막 전체 타임코드를 offset_ms 만큼 이동. fmt('srt'|'vtt')에 맞춰 출력.
+    시작 TC가 0 이전(음수)이 되는 블록은 삭제하고 인덱스를 1부터 재정렬한다."""
+    blocks = re.split(r'\n\s*\n', content.strip())
+    shifted =[]
+    for block in blocks:
+        lines = block.split('\n')
+        if lines and ('WEBVTT' in lines[0] or 'NOTE' in lines[0]):
+            continue  # 헤더/노트는 버리고 vtt 출력 시 다시 붙임
+        tc_idx = next((i for i, line in enumerate(lines) if '-->' in line), -1)
+        if tc_idx == -1:
+            continue
+        tc_line = re.sub(r'\s*align:.*', '', lines[tc_idx])
+        start_str, end_str = tc_line.split('-->')
+        start_ms = parse_tc_to_ms(start_str) + offset_ms
+        end_ms = parse_tc_to_ms(end_str) + offset_ms
+        if start_ms < 0:  # 당겨서 0 이전으로 밀려난 자막은 삭제
+            continue
+        text_lines = lines[tc_idx+1:]
+        shifted.append((start_ms, end_ms, text_lines))
+
+    if fmt == 'vtt':
+        out = ["WEBVTT", ""]
+        for start_ms, end_ms, text_lines in shifted:
+            tc = f"{ms_to_vtt_tc(start_ms)} --> {ms_to_vtt_tc(end_ms)}"
+            out.extend([tc] + text_lines + [""])
+        return "\n".join(out)
+
+    out =[]
+    for i, (start_ms, end_ms, text_lines) in enumerate(shifted, 1):
+        tc = f"{ms_to_srt_tc(start_ms)} --> {ms_to_srt_tc(end_ms)}"
+        out.extend([str(i), tc] + text_lines + [""])
+    return "\n".join(out)
+
+# ==========================================
 # 4. 기본 포맷 변환 (VTT <-> SRT) 함수
 # ==========================================
 def vtt_to_srt_str(vtt_content):
@@ -361,7 +439,7 @@ if 'link_count' not in st.session_state:
 def add_link():
     st.session_state.link_count += 1
 
-tab1, tab2, tab3, tab4 = st.tabs([t["tab1"], t["tab2"], t["tab3"], t["tab4"]])
+tab1, tab2, tab3, tab4, tab5 = st.tabs([t["tab1"], t["tab2"], t["tab3"], t["tab4"], t["tab5"]])
 
 # ----------------- TAB 1: 복수 다운로드 & 테스트 자막 컷팅 -----------------
 with tab1:
@@ -395,7 +473,21 @@ with tab1:
     else:
         test_min = 0.0
         action_type = t["t1_radio_1"]
-    
+
+    st.markdown("---")
+    st.markdown(t["t1_shift_title"])
+    enable_shift = st.checkbox(t["t1_chk_shift"], value=False)
+    if enable_shift:
+        scol1, scol2 = st.columns(2)
+        with scol1:
+            shift_sign = st.radio(t["shift_sign_lbl"], [t["shift_sign_minus"], t["shift_sign_plus"]], key="t1_shift_sign")
+        with scol2:
+            shift_offset_str = st.text_input(t["shift_offset_lbl"], value="01:00:00", key="t1_shift_offset")
+        sign_char = "-" if shift_sign == t["shift_sign_minus"] else "+"
+        t1_offset_ms = parse_offset_to_ms(sign_char, shift_offset_str)
+    else:
+        t1_offset_ms = 0
+
     st.markdown("---")
     default_langs =['en', 'ja', 'zh-CN', 'zh-TW', 'th', 'id', 'vi', 'es', 'fr', 'pt', 'fil', 'ko', 'ar', 'de', 'it', 'ru']
     selected_langs = st.multiselect(t["t1_lang_label"], default_langs, default=default_langs)
@@ -431,7 +523,9 @@ with tab1:
                                     if is_valid:
                                         if enable_cleanup:
                                             vtt_text = process_test_subtitles(vtt_text, test_min, action_type)
-                                        
+                                        if enable_shift and t1_offset_ms != 0:
+                                            vtt_text = shift_subtitle_content(vtt_text, t1_offset_ms, 'vtt')
+
                                         zip_file.writestr(f"original_vtt/{prefix}_{lang}.vtt", vtt_text)
                                         srt_text = vtt_to_srt_str(vtt_text)
                                         zip_file.writestr(f"premiere_srt/{prefix}_{lang}.srt", srt_text)
@@ -444,7 +538,7 @@ with tab1:
                                     else:
                                         st.warning(t["t1_msg_err_fmt"].format(prefix=prefix, lang=lang, msg=msg))
                                 else:
-                                    pass
+                                    st.warning(f"⚠️ [{prefix}] {lang} — HTTP {res.status_code}: {target_url}")
                             except Exception as e:
                                 st.error(t["t1_msg_err_sys"].format(prefix=prefix, lang=lang, e=e))
 
@@ -457,6 +551,8 @@ with tab1:
                     mime="application/zip",
                     type="primary"
                 )
+            else:
+                st.error("❌ 다운로드된 자막이 없습니다. URL과 서버 경로를 확인해주세요. / No subtitles downloaded. Please check the URL and server path.")
 
 # ----------------- TAB 2: 수동 VTT -> SRT -----------------
 with tab2:
@@ -594,3 +690,57 @@ with tab4:
                         mime="application/zip",
                         type="primary",
                     )
+
+# ----------------- TAB 5: 전체 자막 타임코드 시프트 -----------------
+with tab5:
+    st.subheader(t["t5_sub"])
+    st.info(t["t5_info"])
+
+    shift_files = st.file_uploader(t["t5_upload"], type=['srt', 'vtt'], accept_multiple_files=True, key="shift_files")
+
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        t5_sign = st.radio(t["shift_sign_lbl"], [t["shift_sign_minus"], t["shift_sign_plus"]], key="t5_shift_sign")
+    with col2:
+        t5_offset_str = st.text_input(t["shift_offset_lbl"], value="01:00:00", key="t5_shift_offset")
+
+    t5_sign_char = "-" if t5_sign == t["shift_sign_minus"] else "+"
+
+    if st.button(t["t5_btn_run"], type="primary", key="t5_run"):
+        offset_ms = parse_offset_to_ms(t5_sign_char, t5_offset_str)
+        if not shift_files:
+            st.warning(t["t5_err_nofile"])
+        elif offset_ms == 0:
+            st.warning(t["t5_err_offset"])
+        else:
+            results =[]  # (출력파일명, 데이터)
+            for f in shift_files:
+                f.seek(0)
+                content = f.read().decode("utf-8")
+                fmt = 'vtt' if f.name.lower().endswith('.vtt') else 'srt'
+                shifted = shift_subtitle_content(content, offset_ms, fmt)
+                results.append((f"shifted_{f.name}", shifted))
+
+            st.success(t["t5_success"].format(cnt=len(results), sign=t5_sign_char, offset=t5_offset_str))
+
+            if len(results) == 1:
+                out_name, out_data = results[0]
+                st.download_button(
+                    label=t["t2_btn_dl"].format(name=out_name),
+                    data=out_data,
+                    file_name=out_name,
+                    mime="text/plain",
+                    type="primary",
+                )
+            else:
+                zip_buffer = io.BytesIO()
+                with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+                    for out_name, out_data in results:
+                        zf.writestr(out_name, out_data)
+                st.download_button(
+                    label=t["t1_btn_download_zip"],
+                    data=zip_buffer.getvalue(),
+                    file_name="shifted_subtitles.zip",
+                    mime="application/zip",
+                    type="primary",
+                )
