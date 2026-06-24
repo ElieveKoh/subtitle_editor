@@ -59,13 +59,39 @@ TEXTS = {
         "t2_upload": "VTT 파일 업로드",
         "t2_btn_dl": "⬇️ {name} 다운로드",
         "t2_chk_lint": "업로드 시 라인별 형식 검사",
+        "t2_fix_title": "##### 일괄 수정 (선택한 항목만 적용 후 변환·다운로드)",
         
         "t3_sub": "🔙 프리미어 검수 완료된 SRT를 VOD 업로드용 VTT로 변환",
         "t3_upload": "수정 완료된 SRT 업로드",
         "t3_btn_dl": "⬇️ {name} 다운로드",
         "t3_chk_lint": "업로드 시 라인별 형식 검사",
-        
-        # 탭 4 (에디터)
+        "t3_fix_title": "##### 일괄 수정 (선택한 항목만 적용 후 변환·다운로드)",
+
+        "fix_escape_amp": "'&' → &amp; 이스케이프",
+        "fix_strip_tags": "VTT/HTML 태그 제거 (텍스트 유지)",
+        "fix_strip_bad_tags": "잘못된 <> 태그 제거",
+        "fix_remove_cue_id": "VTT cue ID 줄 삭제",
+        "fix_strip_vtt_settings": "VTT 타임코드 정렬·위치 설정 삭제",
+        "fix_tc_separator": "타임코드 밀리초 구분자 수정 (VTT: 점 / SRT: 쉼표)",
+        "fix_arrow_text": "텍스트 내 '-->' → '→' 치환",
+        "fix_remove_orphan": "타임코드 없는 블록 삭제",
+        "fix_remove_empty": "빈 자막 cue 삭제",
+        "btn_fix_dl": "⬇️ 선택 수정 적용 & {name} 다운로드",
+        "btn_fix_zip": "⬇️ 선택 수정 적용 & ZIP 다운로드",
+        "val_fix_title": "##### 자동 수정 (선택 항목만 적용)",
+        "val_fix_timestamp": "타임코드 형식 수정",
+        "val_fix_vtt_extra": "VTT cue ID·위치 설정 제거",
+        "val_fix_entities": "& 이스케이프",
+        "val_fix_markup": "태그 제거 · '-->' 치환",
+        "val_fix_remove_invalid": "빈 cue·타임코드 없는 블록 삭제",
+        "val_legend": "🔴 **수정 필요** = 형식 위반, 변환·재생 오류 가능 · 🔵 **참고** = VTT/SRT 규격상 허용, 변환 시에만 영향",
+        "val_required_header": "🔴 수정 필요",
+        "val_optional_header": "🔵 참고 (수정 안 해도 됨)",
+        "val_tag_required": "수정 필요",
+        "val_tag_optional": "참고",
+        "val_has_required": "수정 필요 항목이 있습니다. 아래 자동 수정을 켜거나 원본을 고친 뒤 다운로드하세요.",
+        "val_fix_required_title": "##### 🔴 수정 필요 항목 자동 수정",
+        "val_fix_optional_title": "##### 🔵 참고 항목 자동 수정 (선택)",
         "t4_sub": "✂️ SRT 특정 구간 밀어내기 & 새 자막 삽입",
         "t4_info": "지정한 시간 사이에 있는 자막을 비우고, 새로 입력한 텍스트들을 엔터(줄바꿈) 기준으로 자동 분배하여 넣습니다. (나머지 뒤쪽 자막들의 번호와 시간은 밀리지 않고 유지됩니다)",
         "t4_upload": "수정할 원본 SRT 파일 업로드",
@@ -100,37 +126,33 @@ TEXTS = {
         "t5_err_nofile": "최소 한 개 이상의 자막 파일을 업로드해주세요.",
         "t5_err_offset": "이동 시간을 HH:MM:SS 형식으로 0보다 크게 입력해주세요. (예: 01:00:00)",
 
-        # 검증 / 변환 검사
+        # 검증 (SRT/VTT validator 표준 항목)
         "err_vtt_header": "WEBVTT 헤더 누락",
         "err_tc": "타임코드(-->) 없음",
-        "lint_log_title": "##### 변환 검사 로그",
-        "lint_log_legend": "형식오류 = 파일 규격 위반 | 변환누락 = 변환 후 빠짐 | 변환변경 = 변환되나 내용·설정 달라짐 | 재생주의 = 변환은 됨, 플레이어 표시만 확인",
-        "lint_kind_format": "형식오류",
-        "lint_kind_drop": "변환누락",
-        "lint_kind_change": "변환변경",
-        "lint_kind_playback": "재생주의",
-        "lint_none": "검사 항목 없음",
-        "lint_ok_lang": "{lang}: 변환 시 문제 없음",
-        "lint_empty": "파일이 비어 있음",
-        "lint_vtt_bad_header": "WEBVTT 헤더가 없음",
-        "lint_no_tc": "타임코드가 없어 이 블록은 변환되지 않음",
-        "lint_bad_tc": "타임코드 형식이 규격과 다름",
-        "lint_tc_order": "종료 시간이 시작 시간보다 앞섬",
-        "lint_bad_index": "SRT 번호가 정수가 아님",
-        "lint_short_block": "블록 구성이 부족해 변환되지 않음",
-        "lint_no_text": "자막 텍스트가 없어 빈 cue로 변환됨",
-        "lint_orphan_block": "타임코드 없는 블록은 변환되지 않음",
-        "lint_srt_comma": "SRT는 밀리초에 쉼표(,)를 써야 함 (현재 점(.) 사용)",
-        "lint_vtt_dot": "VTT는 밀리초에 점(.)을 써야 함 (현재 쉼표(,) 사용)",
-        "lint_digits_only": "숫자만 있음 (변환은 됨, 일부 플레이어에서 미표시)",
-        "lint_symbols_only": "특수기호만 있음 (변환은 됨, 화면에 거의 안 보임)",
-        "lint_text_arrow": "텍스트에 '-->'가 있어 cue 구분이 깨지고 뒤 자막이 누락될 수 있음",
-        "lint_bad_angle": "닫히지 않거나 잘못된 <> 태그 (텍스트 일부가 잘릴 수 있음)",
-        "lint_bad_amp": "'&'가 이스케이프되지 않음 (&amp; 필요, HTML 플레이어에서 깨짐)",
-        "lint_vtt_cue_id_drop": "cue ID 줄은 SRT에 포함되지 않음",
-        "lint_vtt_settings_drop": "VTT 정렬/위치 설정은 SRT에 포함되지 않음",
-        "lint_vtt_tags_change": "VTT/HTML 태그는 SRT에서 스타일이 적용되지 않음",
-        "lint_count_mismatch": "원본 {src}개 cue 중 {out}개만 변환됨",
+        "val_title": "##### 검사 결과",
+        "val_ok": "문제 없음",
+        "val_empty_file": "빈 파일",
+        "val_missing_file_header": "WEBVTT 헤더 없음",
+        "val_no_timestamp": "타임코드 없음",
+        "val_bad_timestamp": "타임코드 형식 오류",
+        "val_bad_timestamp_order": "종료 시간이 시작보다 앞섬",
+        "val_bad_index": "자막 번호 오류",
+        "val_bad_block": "cue 블록 구조 오류",
+        "val_bad_cue_id": "cue identifier 줄 (VTT 정상)",
+        "val_bad_cue_settings": "cue 설정 align 등 (VTT 정상)",
+        "val_bad_markup": "잘못된 태그 (일부 플레이어)",
+        "val_unescaped_entity": "& 미이스케이프 (HTML 플레이어)",
+        "val_empty_text": "자막 텍스트 없음 (빈 cue)",
+        "val_timestamp_conflict": "텍스트에 '-->' 포함 (파싱 깨짐)",
+        "val_summary": "{total}건 (수정 필요 {req} / 참고 {opt})",
+        "val_legend": "🔴 **수정 필요** = 형식 위반, 변환·재생 오류 가능 · 🔵 **참고** = 규격상 허용, 변환 시에만 영향",
+        "val_required_header": "🔴 수정 필요",
+        "val_optional_header": "🔵 참고 (수정 안 해도 됨)",
+        "val_tag_required": "수정 필요",
+        "val_tag_optional": "참고",
+        "val_has_required": "수정 필요 항목이 있습니다. 아래 자동 수정을 켜거나 원본을 고친 뒤 다운로드하세요.",
+        "val_fix_required_title": "##### 🔴 수정 필요 항목 자동 수정",
+        "val_fix_optional_title": "##### 🔵 참고 항목 자동 수정 (선택)",
     },
     "English": {
         "app_title": "🎬 VOD Subtitle Batch Processor & Editor",
@@ -183,11 +205,32 @@ TEXTS = {
         "t2_upload": "Upload VTT file(s)",
         "t2_btn_dl": "⬇️ Download {name}",
         "t2_chk_lint": "Line-by-line format check on upload",
+        "t2_fix_title": "##### Batch fix (apply selected fixes, then convert & download)",
         
         "t3_sub": "🔙 Convert reviewed SRT back to VOD VTT",
         "t3_upload": "Upload modified SRT file(s)",
         "t3_btn_dl": "⬇️ Download {name}",
         "t3_chk_lint": "Line-by-line format check on upload",
+        "t3_fix_title": "##### Batch fix (apply selected fixes, then convert & download)",
+
+        "fix_escape_amp": "Escape '&' → &amp;",
+        "fix_strip_tags": "Remove VTT/HTML tags (keep text)",
+        "fix_strip_bad_tags": "Remove invalid <> tags",
+        "fix_remove_cue_id": "Remove VTT cue ID lines",
+        "fix_strip_vtt_settings": "Remove VTT align/position settings on timecodes",
+        "fix_tc_separator": "Fix ms separator (VTT: dot / SRT: comma)",
+        "fix_arrow_text": "Replace '-->' in text with '→'",
+        "fix_remove_orphan": "Delete blocks without timecode",
+        "fix_remove_empty": "Delete empty subtitle cues",
+        "fix_remove_empty": "Delete empty subtitle cues",
+        "btn_fix_dl": "⬇️ Apply selected fixes & download {name}",
+        "btn_fix_zip": "⬇️ Apply selected fixes & download ZIP",
+        "val_fix_title": "##### Auto-fix (selected items only)",
+        "val_fix_timestamp": "Fix timestamp format",
+        "val_fix_vtt_extra": "Remove VTT cue ID & position settings",
+        "val_fix_entities": "Escape &",
+        "val_fix_markup": "Remove tags · replace '-->'",
+        "val_fix_remove_invalid": "Delete empty cues & blocks without timestamp",
         
         # Tab 4 (Editor)
         "t4_sub": "✂️ Override Specific SRT Section",
@@ -224,37 +267,34 @@ TEXTS = {
         "t5_err_nofile": "Please upload at least one subtitle file.",
         "t5_err_offset": "Enter a shift amount greater than 0 in HH:MM:SS format. (e.g., 01:00:00)",
 
-        # Validation / conversion check
+        # Validation (standard SRT/VTT validator rules)
         "err_vtt_header": "Missing WEBVTT header",
         "err_tc": "Missing timecode (-->)",
-        "lint_log_title": "##### Conversion Check Log",
-        "lint_log_legend": "format = spec violation | dropped = missing after convert | changed = converted but different | playback = converts OK, check player display",
-        "lint_kind_format": "format",
-        "lint_kind_drop": "dropped",
-        "lint_kind_change": "changed",
-        "lint_kind_playback": "playback",
-        "lint_none": "No issues found",
-        "lint_ok_lang": "{lang}: No conversion issues",
-        "lint_empty": "File is empty",
-        "lint_vtt_bad_header": "Missing WEBVTT header",
-        "lint_no_tc": "No timecode — this block is not converted",
-        "lint_bad_tc": "Timecode does not match spec",
-        "lint_tc_order": "End time is before start time",
-        "lint_bad_index": "SRT index is not an integer",
-        "lint_short_block": "Incomplete block — not converted",
-        "lint_no_text": "No subtitle text — converts as empty cue",
-        "lint_orphan_block": "Block without timecode — not converted",
-        "lint_srt_comma": "SRT requires comma (,) for ms (dot found)",
-        "lint_vtt_dot": "VTT requires dot (.) for ms (comma found)",
-        "lint_digits_only": "Digits-only (converts OK, may not show in some players)",
-        "lint_symbols_only": "Symbols-only (converts OK, nearly invisible on screen)",
-        "lint_text_arrow": "Text contains '-->' — cue parsing may break and drop later cues",
-        "lint_bad_angle": "Unclosed or invalid <> tag (text may be truncated)",
-        "lint_bad_amp": "Unescaped '&' (&amp; required, breaks in HTML players)",
-        "lint_vtt_cue_id_drop": "Cue ID line is not included in SRT",
-        "lint_vtt_settings_drop": "VTT align/position settings are not included in SRT",
-        "lint_vtt_tags_change": "VTT/HTML tags are not styled in SRT",
-        "lint_count_mismatch": "Only {out} of {src} cues converted",
+        "val_title": "##### Validation results",
+        "val_ok": "No issues",
+        "val_empty_file": "Empty file",
+        "val_missing_file_header": "Missing WEBVTT header",
+        "val_no_timestamp": "Missing timestamp",
+        "val_bad_timestamp": "Invalid timestamp format",
+        "val_bad_timestamp_order": "End time before start time",
+        "val_empty_text": "Empty cue text",
+        "val_bad_index": "Invalid subtitle index",
+        "val_bad_block": "Invalid cue block structure",
+        "val_bad_cue_id": "Cue identifier line (valid in VTT)",
+        "val_bad_cue_settings": "Cue settings align etc. (valid in VTT)",
+        "val_bad_markup": "Invalid tags (some players)",
+        "val_unescaped_entity": "Unescaped & (HTML players)",
+        "val_empty_text": "Empty cue text",
+        "val_timestamp_conflict": "'-->' in text (breaks parsing)",
+        "val_summary": "{total} issue(s) (required {req} / optional {opt})",
+        "val_legend": "🔴 **Required** = format violation, may break convert/playback · 🔵 **Optional** = allowed by spec, convert-only impact",
+        "val_required_header": "🔴 Required fixes",
+        "val_optional_header": "🔵 Optional notes (can skip)",
+        "val_tag_required": "Required",
+        "val_tag_optional": "Optional",
+        "val_has_required": "Required fixes pending. Enable auto-fix below or edit the source before download.",
+        "val_fix_required_title": "##### 🔴 Auto-fix required issues",
+        "val_fix_optional_title": "##### 🔵 Auto-fix optional notes",
     }
 }
 
@@ -488,28 +528,27 @@ VTT_TC_RE = re.compile(
 )
 VTT_TAG_RE = re.compile(r'</?(?:c|b|i|u|ruby|rt|lang|v|voice)(?:\s[^>]*)?>', re.I)
 VTT_SETTINGS_RE = re.compile(r'\s+(align|position|line|size|vertical):[^\s]*', re.I)
-LINT_KIND_KEYS = {
-    "format": "lint_kind_format",
-    "drop": "lint_kind_drop",
-    "change": "lint_kind_change",
-    "playback": "lint_kind_playback",
-}
+REQUIRED_RULES = frozenset({
+    "empty_file", "missing_file_header", "no_timestamp", "bad_timestamp",
+    "bad_timestamp_order", "bad_index", "bad_block", "timestamp_conflict",
+})
 
-def _kind_label(kind):
-    key = LINT_KIND_KEYS.get(kind)
-    return t[key] if key else kind
-
-def _lint_item(line, tc, content, kind, msg):
-    preview = (content or "").strip()
-    if len(preview) > 80:
-        preview = preview[:77] + "..."
+def _finding(line, tc, text, rule, severity=None):
+    if severity is None:
+        severity = "required" if rule in REQUIRED_RULES else "optional"
+    preview = (text or "").strip()
+    if len(preview) > 100:
+        preview = preview[:97] + "..."
     return {
         "line": line,
         "tc": (tc or "-").strip(),
-        "content": preview or "(empty)",
-        "kind": kind,
-        "msg": msg,
+        "text": preview or "",
+        "rule": rule,
+        "severity": severity,
     }
+
+def _rule_label(rule):
+    return t.get(f"val_{rule}", rule)
 
 def split_blocks_with_lines(content):
     lines = content.splitlines()
@@ -542,58 +581,28 @@ def detect_lang_from_filename(name):
     parts = stem.rsplit('_', 1)
     return parts[-1] if len(parts) > 1 and parts[-1] else name
 
-def _count_output_cues(converted):
-    return len([b for b in re.split(r'\n\s*\n', converted.strip()) if '-->' in b])
-
-def _count_source_vtt_cues(content):
-    n = 0
-    for block_start, block_lines in split_blocks_with_lines(content):
-        first = block_lines[0][1]
-        if first.strip().startswith("NOTE"):
-            continue
-        if block_start == 1 and not any("-->" in txt for _, txt in block_lines):
-            continue
-        if any("-->" in txt for _, txt in block_lines):
-            n += 1
-    return n
-
-def _count_source_srt_cues(content):
-    n = 0
-    for _, block_lines in split_blocks_with_lines(content):
-        if len(block_lines) >= 2 and any("-->" in txt for _, txt in block_lines):
-            n += 1
-    return n
-
-def _check_text_on_convert(line_no, tc_line, text, issues):
+def _check_cue_text(line_no, tc_short, text, findings):
     stripped = text.strip()
     if not stripped:
         return
-    if stripped.isdigit():
-        issues.append(_lint_item(line_no, tc_line, text, "playback", t["lint_digits_only"]))
-    elif not re.search(r'[\w\u00C0-\uFFFF]', stripped, re.UNICODE) and re.search(r'\S', stripped):
-        issues.append(_lint_item(line_no, tc_line, text, "playback", t["lint_symbols_only"]))
     if '-->' in stripped:
-        issues.append(_lint_item(line_no, tc_line, text, "drop", t["lint_text_arrow"]))
+        findings.append(_finding(line_no, tc_short, text, "timestamp_conflict"))
     if '<' in stripped:
         cleaned = VTT_TAG_RE.sub('', stripped)
         if '<' in cleaned or '>' in cleaned:
-            issues.append(_lint_item(line_no, tc_line, text, "change", t["lint_bad_angle"]))
-        elif VTT_TAG_RE.search(stripped):
-            issues.append(_lint_item(line_no, tc_line, text, "change", t["lint_vtt_tags_change"]))
+            findings.append(_finding(line_no, tc_short, text, "bad_markup"))
     if '&' in stripped and not re.search(r'&(?:[a-zA-Z]+|#\d+|#x[0-9a-fA-F]+);', stripped):
-        issues.append(_lint_item(line_no, tc_line, text, "playback", t["lint_bad_amp"]))
+        findings.append(_finding(line_no, tc_short, text, "unescaped_entity"))
 
-def lint_vtt_to_srt(content):
-    """VTT → SRT 변환 시 누락·변경·형식 불일치 항목 수집."""
-    issues = []
+def validate_vtt_file(content):
+    findings = []
     if not content.strip():
-        return [_lint_item(1, "-", "", "format", t["lint_empty"])]
+        return [_finding(1, "-", "", "empty_file")]
 
     lines = content.splitlines()
     if not lines[0].strip().startswith("WEBVTT"):
-        issues.append(_lint_item(1, "-", lines[0], "format", t["lint_vtt_bad_header"]))
+        findings.append(_finding(1, "-", lines[0], "missing_file_header"))
 
-    convertible = 0
     for block_start, block_lines in split_blocks_with_lines(content):
         first_text = block_lines[0][1]
         if first_text.strip().startswith("NOTE"):
@@ -603,7 +612,7 @@ def lint_vtt_to_srt(content):
 
         tc_entries = [(ln, txt) for ln, txt in block_lines if "-->" in txt]
         if not tc_entries:
-            issues.append(_lint_item(block_start, "-", first_text, "drop", t["lint_orphan_block"]))
+            findings.append(_finding(block_start, "-", first_text, "no_timestamp"))
             continue
 
         tc_line_no, tc_text = tc_entries[0]
@@ -611,63 +620,50 @@ def lint_vtt_to_srt(content):
 
         for ln, txt in block_lines:
             if ln < tc_line_no and txt.strip():
-                issues.append(_lint_item(ln, tc_short, txt, "change", t["lint_vtt_cue_id_drop"]))
+                findings.append(_finding(ln, tc_short, txt, "bad_cue_id"))
 
         if VTT_SETTINGS_RE.search(tc_text):
-            issues.append(_lint_item(tc_line_no, tc_short, tc_text, "change", t["lint_vtt_settings_drop"]))
+            findings.append(_finding(tc_line_no, tc_short, tc_text, "bad_cue_settings"))
 
         tc_clean = _clean_vtt_tc(tc_text)
-        if '.' not in tc_clean.split('-->')[0] and ',' in tc_clean:
-            issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_vtt_dot"]))
-        elif not VTT_TC_RE.match(tc_clean):
-            issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_bad_tc"]))
+        if not VTT_TC_RE.match(tc_clean):
+            findings.append(_finding(tc_line_no, tc_short, tc_text, "bad_timestamp"))
         else:
             start_s, end_s = tc_clean.split('-->', 1)
             if parse_tc_to_ms(start_s) >= parse_tc_to_ms(end_s):
-                issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_tc_order"]))
+                findings.append(_finding(tc_line_no, tc_short, tc_text, "bad_timestamp_order"))
 
         text_lines = [(ln, txt) for ln, txt in block_lines if ln > tc_line_no]
         if not any(txt.strip() for _, txt in text_lines):
-            issues.append(_lint_item(tc_line_no, tc_short, "", "drop", t["lint_no_text"]))
+            findings.append(_finding(tc_line_no, tc_short, "", "empty_text"))
         else:
             for ln, txt in text_lines:
-                _check_text_on_convert(ln, tc_short, txt, issues)
+                _check_cue_text(ln, tc_short, txt, findings)
 
-    src_count = _count_source_vtt_cues(content)
-    if src_count > 0:
-        out_count = _count_output_cues(vtt_to_srt_str(content))
-        if out_count < src_count:
-            issues.append(_lint_item(
-                1, "-", "",
-                "drop",
-                t["lint_count_mismatch"].format(src=src_count, out=out_count),
-            ))
+    return findings
 
-    return issues
-
-def lint_srt_to_vtt(content):
-    """SRT → VTT 변환 시 누락·변경·형식 불일치 항목 수집."""
-    issues = []
+def validate_srt_file(content):
+    findings = []
     if not content.strip():
-        return [_lint_item(1, "-", "", "format", t["lint_empty"])]
+        return [_finding(1, "-", "", "empty_file")]
 
     if "-->" not in content:
         lines = content.splitlines()
-        issues.append(_lint_item(1, "-", lines[0] if lines else "", "format", t["lint_no_tc"]))
-        return issues
+        findings.append(_finding(1, "-", lines[0] if lines else "", "no_timestamp"))
+        return findings
 
     for block_start, block_lines in split_blocks_with_lines(content):
         if len(block_lines) < 2:
-            issues.append(_lint_item(block_start, "-", block_lines[0][1], "drop", t["lint_short_block"]))
+            findings.append(_finding(block_start, "-", block_lines[0][1], "bad_block"))
             continue
 
         idx_line_no, idx_text = block_lines[0]
         if not idx_text.strip().isdigit():
-            issues.append(_lint_item(idx_line_no, "-", idx_text, "format", t["lint_bad_index"]))
+            findings.append(_finding(idx_line_no, "-", idx_text, "bad_index"))
 
         tc_entries = [(ln, txt) for ln, txt in block_lines if "-->" in txt]
         if not tc_entries:
-            issues.append(_lint_item(block_start, "-", block_lines[0][1], "drop", t["lint_no_tc"]))
+            findings.append(_finding(block_start, "-", block_lines[0][1], "no_timestamp"))
             continue
 
         tc_line_no, tc_text = tc_entries[0]
@@ -675,73 +671,267 @@ def lint_srt_to_vtt(content):
         if len(tc_short) > 48:
             tc_short = tc_short[:45] + "..."
 
-        if '.' in tc_text and ',' not in tc_text.split('-->')[0]:
-            issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_srt_comma"]))
-        elif not SRT_TC_RE.match(tc_text.strip()):
-            issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_bad_tc"]))
+        if not SRT_TC_RE.match(tc_text.strip()):
+            findings.append(_finding(tc_line_no, tc_short, tc_text, "bad_timestamp"))
         else:
             start_s, end_s = tc_text.strip().split('-->', 1)
             if parse_tc_to_ms(start_s) >= parse_tc_to_ms(end_s):
-                issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_tc_order"]))
+                findings.append(_finding(tc_line_no, tc_short, tc_text, "bad_timestamp_order"))
 
         text_lines = [(ln, txt) for ln, txt in block_lines if ln > tc_line_no]
         if not any(txt.strip() for _, txt in text_lines):
-            issues.append(_lint_item(tc_line_no, tc_short, "", "drop", t["lint_no_text"]))
+            findings.append(_finding(tc_line_no, tc_short, "", "empty_text"))
         else:
             for ln, txt in text_lines:
-                _check_text_on_convert(ln, tc_short, txt, issues)
+                _check_cue_text(ln, tc_short, txt, findings)
 
-    src_count = _count_source_srt_cues(content)
-    if src_count > 0:
-        out_count = _count_output_cues(srt_to_vtt_str(content))
-        if out_count < src_count:
-            issues.append(_lint_item(
-                1, "-", "",
-                "drop",
-                t["lint_count_mismatch"].format(src=src_count, out=out_count),
-            ))
+    return findings
 
-    return issues
+def _escape_bare_amp(text):
+    out = []
+    i = 0
+    while i < len(text):
+        if text[i] == '&':
+            m = re.match(r'&(?:[a-zA-Z]+|#\d+|#x[0-9a-fA-F]+);', text[i:])
+            if m:
+                out.append(m.group(0))
+                i += len(m.group(0))
+            else:
+                out.append('&amp;')
+                i += 1
+        else:
+            out.append(text[i])
+            i += 1
+    return ''.join(out)
 
-def format_lang_lint_section(lang, issues):
-    if not issues:
-        return f"{lang} (0)\n  {t['lint_none']}"
-    rows = [f"{lang} ({len(issues)})"]
-    for item in issues:
-        rows.append(
-            f"  [{_kind_label(item['kind'])}] {item['line']} {item['tc']} - {item['content']} — {item['msg']}"
-        )
-    return "\n".join(rows)
+def _fix_tc_separator_line(line, fmt):
+    if '-->' not in line:
+        return line
+    if fmt == 'vtt':
+        return re.sub(r'(\d),(\d)', r'\1.\2', line)
+    return re.sub(r'(\d)\.(\d)', r'\1,\2', line)
 
-def format_combined_lint_log(sections):
-    return "\n\n".join(format_lang_lint_section(lang, issues) for lang, issues in sections)
+def _ui_fixes_to_internal(ui, fmt):
+    return {
+        'fix_tc_separator': ui.get('fix_timestamp', False),
+        'escape_amp': ui.get('fix_entities', False),
+        'strip_vtt_tags': ui.get('fix_markup', False),
+        'strip_bad_tags': ui.get('fix_markup', False),
+        'fix_arrow_text': ui.get('fix_markup', False),
+        'remove_cue_id': ui.get('fix_vtt_extra', False) if fmt == 'vtt' else False,
+        'strip_vtt_settings': ui.get('fix_vtt_extra', False) if fmt == 'vtt' else False,
+        'remove_orphan': ui.get('fix_remove_invalid', False),
+        'remove_empty': ui.get('fix_remove_invalid', False),
+    }
 
-def render_lint_log(sections):
+def _get_fix_option_defs(fmt):
+    required = [("fix_timestamp", "val_fix_timestamp", True)]
+    optional = [
+        ("fix_entities", "val_fix_entities", False),
+        ("fix_markup", "val_fix_markup", False),
+        ("fix_remove_invalid", "val_fix_remove_invalid", False),
+    ]
+    if fmt == 'vtt':
+        optional.insert(0, ("fix_vtt_extra", "val_fix_vtt_extra", False))
+    return required, optional
+
+def apply_subtitle_fixes(content, fmt, ui_fixes):
+    fixes = _ui_fixes_to_internal(ui_fixes, fmt)
+    if not any(fixes.values()):
+        return content
+
+    blocks_out = []
+    for block_start, block_lines in split_blocks_with_lines(content):
+        lines = [txt for _, txt in block_lines]
+        if not lines:
+            continue
+
+        if block_start == 1 and not any('-->' in ln for ln in lines):
+            if fmt == 'vtt':
+                blocks_out.append(lines)
+            continue
+
+        if lines[0].strip().startswith('NOTE'):
+            blocks_out.append(lines)
+            continue
+
+        tc_idx = next((i for i, ln in enumerate(lines) if '-->' in ln), -1)
+        if tc_idx == -1:
+            if not fixes.get('remove_orphan'):
+                blocks_out.append(lines)
+            continue
+
+        if fixes.get('remove_cue_id') and fmt == 'vtt' and tc_idx > 0:
+            lines = lines[tc_idx:]
+            tc_idx = 0
+
+        if fixes.get('strip_vtt_settings') and fmt == 'vtt':
+            lines[tc_idx] = VTT_SETTINGS_RE.sub('', lines[tc_idx]).strip()
+
+        if fixes.get('fix_tc_separator'):
+            lines[tc_idx] = _fix_tc_separator_line(lines[tc_idx], fmt)
+
+        fixed_text = []
+        for tl in lines[tc_idx + 1:]:
+            s = tl
+            if fixes.get('escape_amp'):
+                s = _escape_bare_amp(s)
+            if fixes.get('strip_vtt_tags'):
+                s = VTT_TAG_RE.sub('', s)
+            if fixes.get('strip_bad_tags'):
+                s = re.sub(r'<[^>]*>', '', s)
+            if fixes.get('fix_arrow_text'):
+                s = s.replace('-->', '→')
+            fixed_text.append(s)
+
+        if fixes.get('remove_empty') and not any(x.strip() for x in fixed_text):
+            continue
+
+        blocks_out.append(lines[:tc_idx + 1] + fixed_text)
+
+    if fmt == 'vtt':
+        if not blocks_out or not blocks_out[0][0].strip().startswith('WEBVTT'):
+            blocks_out.insert(0, ['WEBVTT'])
+        return '\n\n'.join('\n'.join(bl) for bl in blocks_out if bl).rstrip() + '\n'
+
+    out = []
+    idx = 1
+    for bl in blocks_out:
+        tc_idx = next((i for i, ln in enumerate(bl) if '-->' in ln), -1)
+        if tc_idx == -1:
+            continue
+        out.extend([str(idx), bl[tc_idx]] + bl[tc_idx + 1:] + [''])
+        idx += 1
+    return '\n'.join(out)
+
+def render_fix_options(fmt, key_prefix):
+    fixes = {}
+    required_defs, optional_defs = _get_fix_option_defs(fmt)
+    st.markdown(t["val_fix_required_title"])
+    for fix_id, label_key, default in required_defs:
+        fixes[fix_id] = st.checkbox(t[label_key], value=default, key=f"{key_prefix}_fix_{fix_id}")
+    st.markdown(t["val_fix_optional_title"])
+    col1, col2 = st.columns(2)
+    for i, (fix_id, label_key, default) in enumerate(optional_defs):
+        with col1 if i % 2 == 0 else col2:
+            fixes[fix_id] = st.checkbox(t[label_key], value=default, key=f"{key_prefix}_fix_{fix_id}")
+    return fixes
+
+def _render_finding_row(f):
+    tag = t["val_tag_required"] if f["severity"] == "required" else t["val_tag_optional"]
+    icon = "🔴" if f["severity"] == "required" else "🔵"
+    st.markdown(f"{icon} **L{f['line']}** · **{tag}** · `{f['rule']}` — {_rule_label(f['rule'])}")
+    if f["tc"] != "-":
+        st.code(f["tc"], language=None)
+    if f["text"]:
+        st.markdown(f"> {f['text']}")
+
+def render_lint_results(sections):
     if not sections:
         return
-    st.markdown(t["lint_log_title"])
-    st.caption(t["lint_log_legend"])
-    st.code(format_combined_lint_log(sections), language=None)
+    st.markdown(t["val_title"])
+    st.caption(t["val_legend"])
+    any_required = False
+    for lang, findings in sections:
+        with st.container(border=True):
+            req = [f for f in findings if f["severity"] == "required"]
+            opt = [f for f in findings if f["severity"] == "optional"]
+            if findings:
+                st.markdown(f"#### {lang} · {t['val_summary'].format(total=len(findings), req=len(req), opt=len(opt))}")
+            else:
+                st.markdown(f"#### {lang}")
+            if not findings:
+                st.success(t["val_ok"])
+                continue
+            if req:
+                any_required = True
+                st.markdown(f"**{t['val_required_header']}** ({len(req)})")
+                for f in req:
+                    _render_finding_row(f)
+            if opt:
+                st.markdown(f"**{t['val_optional_header']}** ({len(opt)})")
+                for f in opt:
+                    _render_finding_row(f)
+    if any_required:
+        st.warning(t["val_has_required"])
+
+def run_manual_convert_tab(tab_key, upload_label, upload_types, src_fmt, validate_fn, convert_fn, out_name_fn):
+    enable_lint = st.checkbox(
+        t[f"{tab_key}_chk_lint"], value=True, key=f"{tab_key}_lint"
+    )
+    uploaded = st.file_uploader(
+        upload_label, type=upload_types, accept_multiple_files=True, key=f"{tab_key}_up"
+    )
+    if not uploaded:
+        return
+
+    files = []
+    for f in uploaded:
+        files.append({
+            'name': f.name,
+            'lang': detect_lang_from_filename(f.name),
+            'content': f.read().decode('utf-8'),
+        })
+
+    if enable_lint:
+        render_lint_results([(fd['lang'], validate_fn(fd['content'])) for fd in files])
+
+    st.markdown("---")
+    fixes = render_fix_options(src_fmt, tab_key)
+
+    outputs = []
+    for fd in files:
+        fixed = apply_subtitle_fixes(fd['content'], src_fmt, fixes)
+        outputs.append((out_name_fn(fd['name']), convert_fn(fixed)))
+
+    st.markdown("---")
+    if len(outputs) == 1:
+        name, data = outputs[0]
+        st.download_button(
+            t["btn_fix_dl"].format(name=name),
+            data=data,
+            file_name=name,
+            mime="text/plain",
+            type="primary",
+            key=f"{tab_key}_dl_single",
+        )
+    else:
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+            for name, data in outputs:
+                zf.writestr(name, data)
+        st.download_button(
+            t["btn_fix_zip"],
+            data=zip_buffer.getvalue(),
+            file_name=f"{tab_key}_converted.zip",
+            mime="application/zip",
+            type="primary",
+            key=f"{tab_key}_dl_zip",
+        )
+
+def render_lint_log(sections):
+    render_lint_results(sections)
 
 def validate_vtt(content):
-    issues = lint_vtt_to_srt(content)
-    critical = [i for i in issues if i["kind"] in ("drop", "format")]
-    if critical:
-        first = critical[0]
-        return False, f"L{first['line']} {first['msg']}"
+    findings = validate_vtt_file(content)
+    required = [f for f in findings if f["severity"] == "required"]
+    if required:
+        f = required[0]
+        return False, f"L{f['line']} [{t['val_tag_required']}] {_rule_label(f['rule'])}"
     return True, ""
 
 def validate_srt(content):
-    issues = lint_srt_to_vtt(content)
-    critical = [i for i in issues if i["kind"] in ("drop", "format")]
-    if critical:
-        first = critical[0]
-        return False, f"L{first['line']} {first['msg']}"
+    findings = validate_srt_file(content)
+    required = [f for f in findings if f["severity"] == "required"]
+    if required:
+        f = required[0]
+        return False, f"L{f['line']} [{t['val_tag_required']}] {_rule_label(f['rule'])}"
     return True, ""
 
-# 하위 호환 별칭
-lint_vtt = lint_vtt_to_srt
-lint_srt = lint_srt_to_vtt
+lint_vtt_to_srt = validate_vtt_file
+lint_srt_to_vtt = validate_srt_file
+lint_vtt = validate_vtt_file
+lint_srt = validate_srt_file
 
 # ==========================================
 # 6. Streamlit 웹 UI 구성
@@ -872,37 +1062,20 @@ with tab1:
 # ----------------- TAB 2: 수동 VTT -> SRT -----------------
 with tab2:
     st.subheader(t["t2_sub"])
-    enable_lint = st.checkbox(t["t2_chk_lint"], value=True, key="t2_lint")
-    uploaded_vtt = st.file_uploader(t["t2_upload"], type=['vtt'], accept_multiple_files=True)
-    if uploaded_vtt:
-        lint_sections = []
-        for file in uploaded_vtt:
-            content = file.read().decode("utf-8")
-            lang = detect_lang_from_filename(file.name)
-            if enable_lint:
-                lint_sections.append((lang, lint_vtt_to_srt(content)))
-            btn_txt = t["t2_btn_dl"].format(name=file.name.replace('.vtt', '.srt'))
-            st.download_button(btn_txt, data=vtt_to_srt_str(content), file_name=file.name.replace('.vtt', '.srt'), key=f"t2_dl_{file.name}")
-        if enable_lint:
-            render_lint_log(lint_sections)
+    run_manual_convert_tab(
+        "t2", t["t2_upload"], ['vtt'], 'vtt',
+        validate_vtt_file, vtt_to_srt_str,
+        lambda name: name.replace('.vtt', '.srt'),
+    )
 
 # ----------------- TAB 3: 수동 SRT -> VTT (최종) -----------------
 with tab3:
     st.subheader(t["t3_sub"])
-    enable_lint = st.checkbox(t["t3_chk_lint"], value=True, key="t3_lint")
-    uploaded_srt = st.file_uploader(t["t3_upload"], type=['srt'], accept_multiple_files=True)
-    if uploaded_srt:
-        lint_sections = []
-        for file in uploaded_srt:
-            content = file.read().decode("utf-8")
-            new_name = file.name.replace('.srt', '_final.vtt')
-            lang = detect_lang_from_filename(file.name)
-            if enable_lint:
-                lint_sections.append((lang, lint_srt_to_vtt(content)))
-            btn_txt = t["t3_btn_dl"].format(name=new_name)
-            st.download_button(btn_txt, data=srt_to_vtt_str(content), file_name=new_name, type="primary", key=f"t3_dl_{file.name}")
-        if enable_lint:
-            render_lint_log(lint_sections)
+    run_manual_convert_tab(
+        "t3", t["t3_upload"], ['srt'], 'srt',
+        validate_srt_file, srt_to_vtt_str,
+        lambda name: name.replace('.srt', '_final.vtt'),
+    )
 
 # ----------------- TAB 4: 구간 자막 교체 & 밀어넣기 -----------------
 with tab4:
