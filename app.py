@@ -58,10 +58,12 @@ TEXTS = {
         "t2_sub": "📁 로컬 VTT 파일을 SRT로 수동 변환",
         "t2_upload": "VTT 파일 업로드",
         "t2_btn_dl": "⬇️ {name} 다운로드",
+        "t2_chk_lint": "업로드 시 라인별 형식 검사",
         
         "t3_sub": "🔙 프리미어 검수 완료된 SRT를 VOD 업로드용 VTT로 변환",
         "t3_upload": "수정 완료된 SRT 업로드",
         "t3_btn_dl": "⬇️ {name} 다운로드",
+        "t3_chk_lint": "업로드 시 라인별 형식 검사",
         
         # 탭 4 (에디터)
         "t4_sub": "✂️ SRT 특정 구간 밀어내기 & 새 자막 삽입",
@@ -98,9 +100,32 @@ TEXTS = {
         "t5_err_nofile": "최소 한 개 이상의 자막 파일을 업로드해주세요.",
         "t5_err_offset": "이동 시간을 HH:MM:SS 형식으로 0보다 크게 입력해주세요. (예: 01:00:00)",
 
-        # 검증 에러 메시지
+        # 검증 / 변환 검사
         "err_vtt_header": "WEBVTT 헤더 누락",
-        "err_tc": "타임코드(-->) 없음"
+        "err_tc": "타임코드(-->) 없음",
+        "lint_log_title": "##### 변환 검사 로그",
+        "lint_none": "검사 항목 없음",
+        "lint_ok_lang": "{lang}: 변환 시 문제 없음",
+        "lint_empty": "파일이 비어 있어 변환할 수 없음",
+        "lint_vtt_bad_header": "WEBVTT 헤더 없음",
+        "lint_no_tc": "타임코드 없음 → 변환 시 블록 누락",
+        "lint_bad_tc": "타임코드 형식 불일치",
+        "lint_tc_order": "종료 시간이 시작보다 앞섬",
+        "lint_bad_index": "SRT 번호가 정수가 아님",
+        "lint_short_block": "블록 불완전 → 변환 시 누락",
+        "lint_no_text": "자막 텍스트 없음 → 빈 자막으로 변환됨",
+        "lint_orphan_block": "타임코드 없는 블록 → 변환 시 누락",
+        "lint_srt_comma": "SRT 타임코드는 쉼표(,)로 밀리초 표기",
+        "lint_vtt_dot": "VTT 타임코드는 점(.)으로 밀리초 표기",
+        "lint_digits_only": "숫자만 있음 → 재생 시 안 보일 수 있음",
+        "lint_symbols_only": "특수기호만 있음 → 빈 자막처럼 보일 수 있음",
+        "lint_text_arrow": "텍스트에 '-->' 포함 → 이후 자막 누락 가능",
+        "lint_bad_angle": "잘못된 <> 태그 → 일부만 표시될 수 있음",
+        "lint_bad_amp": "'&' 미이스케이프 → 표시 오류 가능",
+        "lint_vtt_cue_id_drop": "cue ID 줄 → SRT 변환 시 삭제됨",
+        "lint_vtt_settings_drop": "VTT 정렬/위치 설정 → SRT 변환 시 삭제됨",
+        "lint_vtt_tags_change": "VTT/HTML 태그 → SRT에서 스타일 미적용",
+        "lint_count_mismatch": "원본 {src}개 cue 중 {out}개만 변환됨 (일부 누락)",
     },
     "English": {
         "app_title": "🎬 VOD Subtitle Batch Processor & Editor",
@@ -152,10 +177,12 @@ TEXTS = {
         "t2_sub": "📁 Manually convert local VTT to SRT",
         "t2_upload": "Upload VTT file(s)",
         "t2_btn_dl": "⬇️ Download {name}",
+        "t2_chk_lint": "Line-by-line format check on upload",
         
         "t3_sub": "🔙 Convert reviewed SRT back to VOD VTT",
         "t3_upload": "Upload modified SRT file(s)",
         "t3_btn_dl": "⬇️ Download {name}",
+        "t3_chk_lint": "Line-by-line format check on upload",
         
         # Tab 4 (Editor)
         "t4_sub": "✂️ Override Specific SRT Section",
@@ -192,9 +219,32 @@ TEXTS = {
         "t5_err_nofile": "Please upload at least one subtitle file.",
         "t5_err_offset": "Enter a shift amount greater than 0 in HH:MM:SS format. (e.g., 01:00:00)",
 
-        # Validation Errors
+        # Validation / conversion check
         "err_vtt_header": "Missing WEBVTT header",
-        "err_tc": "Missing timecode (-->)"
+        "err_tc": "Missing timecode (-->)",
+        "lint_log_title": "##### Conversion Check Log",
+        "lint_none": "No issues found",
+        "lint_ok_lang": "{lang}: No conversion issues",
+        "lint_empty": "File is empty — cannot convert",
+        "lint_vtt_bad_header": "Missing WEBVTT header",
+        "lint_no_tc": "No timecode — block dropped on conversion",
+        "lint_bad_tc": "Invalid timecode format",
+        "lint_tc_order": "End time is before start time",
+        "lint_bad_index": "SRT index is not an integer",
+        "lint_short_block": "Incomplete block — dropped on conversion",
+        "lint_no_text": "No subtitle text — converts as empty cue",
+        "lint_orphan_block": "Block without timecode — dropped on conversion",
+        "lint_srt_comma": "SRT timecodes must use comma (,) for milliseconds",
+        "lint_vtt_dot": "VTT timecodes must use dot (.) for milliseconds",
+        "lint_digits_only": "Digits-only text — may not display on playback",
+        "lint_symbols_only": "Symbols-only text — may appear blank",
+        "lint_text_arrow": "Text contains '-->' — may drop subsequent cues",
+        "lint_bad_angle": "Invalid <> tag — partial display possible",
+        "lint_bad_amp": "Unescaped '&' — display issues possible",
+        "lint_vtt_cue_id_drop": "Cue ID line — removed in SRT conversion",
+        "lint_vtt_settings_drop": "VTT align/position settings — removed in SRT conversion",
+        "lint_vtt_tags_change": "VTT/HTML tags — styling not applied in SRT",
+        "lint_count_mismatch": "Only {out} of {src} cues converted (some dropped)",
     }
 }
 
@@ -417,16 +467,258 @@ def srt_to_vtt_str(srt_content):
     return "\n".join(vtt_lines)
 
 # ==========================================
-# 5. Validation 함수
+# 5. 변환 검사 (VTT <-> SRT)
 # ==========================================
+SRT_TC_RE = re.compile(
+    r'^(\d{1,2}:\d{2}:\d{2},\d{1,3}|\d{1,2}:\d{2},\d{1,3})\s*-->\s*'
+    r'(\d{1,2}:\d{2}:\d{2},\d{1,3}|\d{1,2}:\d{2},\d{1,3})'
+)
+VTT_TC_RE = re.compile(
+    r'^((?:\d{1,2}:)?\d{1,2}:\d{2}\.\d{1,3})\s*-->\s*((?:\d{1,2}:)?\d{1,2}:\d{2}\.\d{1,3})'
+)
+VTT_TAG_RE = re.compile(r'</?(?:c|b|i|u|ruby|rt|lang|v|voice)(?:\s[^>]*)?>', re.I)
+VTT_SETTINGS_RE = re.compile(r'\s+(align|position|line|size|vertical):[^\s]*', re.I)
+
+def _lint_item(line, tc, content, kind, msg):
+    preview = (content or "").strip()
+    if len(preview) > 80:
+        preview = preview[:77] + "..."
+    return {
+        "line": line,
+        "tc": (tc or "-").strip(),
+        "content": preview or "(empty)",
+        "kind": kind,
+        "msg": msg,
+    }
+
+def split_blocks_with_lines(content):
+    lines = content.splitlines()
+    blocks = []
+    current = []
+    block_start = None
+    for i, line in enumerate(lines, 1):
+        if not line.strip():
+            if current:
+                blocks.append((block_start, current))
+                current = []
+                block_start = None
+        else:
+            if block_start is None:
+                block_start = i
+            current.append((i, line))
+    if current:
+        blocks.append((block_start, current))
+    return blocks
+
+def _clean_vtt_tc(tc_line):
+    return VTT_SETTINGS_RE.sub('', tc_line).strip()
+
+def _tc_short(tc_line):
+    tc = _clean_vtt_tc(tc_line) if tc_line else "-"
+    return tc[:45] + "..." if len(tc) > 48 else tc
+
+def detect_lang_from_filename(name):
+    stem = re.sub(r'\.(srt|vtt)$', '', name, flags=re.IGNORECASE)
+    parts = stem.rsplit('_', 1)
+    return parts[-1] if len(parts) > 1 and parts[-1] else name
+
+def _count_output_cues(converted):
+    return len([b for b in re.split(r'\n\s*\n', converted.strip()) if '-->' in b])
+
+def _count_source_vtt_cues(content):
+    n = 0
+    for block_start, block_lines in split_blocks_with_lines(content):
+        first = block_lines[0][1]
+        if first.strip().startswith("NOTE"):
+            continue
+        if block_start == 1 and not any("-->" in txt for _, txt in block_lines):
+            continue
+        if any("-->" in txt for _, txt in block_lines):
+            n += 1
+    return n
+
+def _count_source_srt_cues(content):
+    n = 0
+    for _, block_lines in split_blocks_with_lines(content):
+        if len(block_lines) >= 2 and any("-->" in txt for _, txt in block_lines):
+            n += 1
+    return n
+
+def _check_text_on_convert(line_no, tc_line, text, issues):
+    stripped = text.strip()
+    if not stripped:
+        return
+    if stripped.isdigit():
+        issues.append(_lint_item(line_no, tc_line, text, "drop", t["lint_digits_only"]))
+    elif not re.search(r'[\w\u00C0-\uFFFF]', stripped, re.UNICODE) and re.search(r'\S', stripped):
+        issues.append(_lint_item(line_no, tc_line, text, "drop", t["lint_symbols_only"]))
+    if '-->' in stripped:
+        issues.append(_lint_item(line_no, tc_line, text, "drop", t["lint_text_arrow"]))
+    if '<' in stripped:
+        cleaned = VTT_TAG_RE.sub('', stripped)
+        if '<' in cleaned or '>' in cleaned:
+            issues.append(_lint_item(line_no, tc_line, text, "change", t["lint_bad_angle"]))
+        elif VTT_TAG_RE.search(stripped):
+            issues.append(_lint_item(line_no, tc_line, text, "change", t["lint_vtt_tags_change"]))
+    if '&' in stripped and not re.search(r'&(?:[a-zA-Z]+|#\d+|#x[0-9a-fA-F]+);', stripped):
+        issues.append(_lint_item(line_no, tc_line, text, "change", t["lint_bad_amp"]))
+
+def lint_vtt_to_srt(content):
+    """VTT → SRT 변환 시 누락·변경·형식 불일치 항목 수집."""
+    issues = []
+    if not content.strip():
+        return [_lint_item(1, "-", "", "format", t["lint_empty"])]
+
+    lines = content.splitlines()
+    if not lines[0].strip().startswith("WEBVTT"):
+        issues.append(_lint_item(1, "-", lines[0], "format", t["lint_vtt_bad_header"]))
+
+    convertible = 0
+    for block_start, block_lines in split_blocks_with_lines(content):
+        first_text = block_lines[0][1]
+        if first_text.strip().startswith("NOTE"):
+            continue
+        if block_start == 1 and not any("-->" in txt for _, txt in block_lines):
+            continue
+
+        tc_entries = [(ln, txt) for ln, txt in block_lines if "-->" in txt]
+        if not tc_entries:
+            issues.append(_lint_item(block_start, "-", first_text, "drop", t["lint_orphan_block"]))
+            continue
+
+        tc_line_no, tc_text = tc_entries[0]
+        tc_short = _tc_short(tc_text)
+
+        for ln, txt in block_lines:
+            if ln < tc_line_no and txt.strip():
+                issues.append(_lint_item(ln, tc_short, txt, "change", t["lint_vtt_cue_id_drop"]))
+
+        if VTT_SETTINGS_RE.search(tc_text):
+            issues.append(_lint_item(tc_line_no, tc_short, tc_text, "change", t["lint_vtt_settings_drop"]))
+
+        tc_clean = _clean_vtt_tc(tc_text)
+        if '.' not in tc_clean.split('-->')[0] and ',' in tc_clean:
+            issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_vtt_dot"]))
+        elif not VTT_TC_RE.match(tc_clean):
+            issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_bad_tc"]))
+        else:
+            start_s, end_s = tc_clean.split('-->', 1)
+            if parse_tc_to_ms(start_s) >= parse_tc_to_ms(end_s):
+                issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_tc_order"]))
+
+        text_lines = [(ln, txt) for ln, txt in block_lines if ln > tc_line_no]
+        if not any(txt.strip() for _, txt in text_lines):
+            issues.append(_lint_item(tc_line_no, tc_short, "", "drop", t["lint_no_text"]))
+        else:
+            for ln, txt in text_lines:
+                _check_text_on_convert(ln, tc_short, txt, issues)
+
+    src_count = _count_source_vtt_cues(content)
+    if src_count > 0:
+        out_count = _count_output_cues(vtt_to_srt_str(content))
+        if out_count < src_count:
+            issues.append(_lint_item(
+                1, "-", "",
+                "drop",
+                t["lint_count_mismatch"].format(src=src_count, out=out_count),
+            ))
+
+    return issues
+
+def lint_srt_to_vtt(content):
+    """SRT → VTT 변환 시 누락·변경·형식 불일치 항목 수집."""
+    issues = []
+    if not content.strip():
+        return [_lint_item(1, "-", "", "format", t["lint_empty"])]
+
+    if "-->" not in content:
+        lines = content.splitlines()
+        issues.append(_lint_item(1, "-", lines[0] if lines else "", "format", t["lint_no_tc"]))
+        return issues
+
+    for block_start, block_lines in split_blocks_with_lines(content):
+        if len(block_lines) < 2:
+            issues.append(_lint_item(block_start, "-", block_lines[0][1], "drop", t["lint_short_block"]))
+            continue
+
+        idx_line_no, idx_text = block_lines[0]
+        if not idx_text.strip().isdigit():
+            issues.append(_lint_item(idx_line_no, "-", idx_text, "format", t["lint_bad_index"]))
+
+        tc_entries = [(ln, txt) for ln, txt in block_lines if "-->" in txt]
+        if not tc_entries:
+            issues.append(_lint_item(block_start, "-", block_lines[0][1], "drop", t["lint_no_tc"]))
+            continue
+
+        tc_line_no, tc_text = tc_entries[0]
+        tc_short = tc_text.strip()
+        if len(tc_short) > 48:
+            tc_short = tc_short[:45] + "..."
+
+        if '.' in tc_text and ',' not in tc_text.split('-->')[0]:
+            issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_srt_comma"]))
+        elif not SRT_TC_RE.match(tc_text.strip()):
+            issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_bad_tc"]))
+        else:
+            start_s, end_s = tc_text.strip().split('-->', 1)
+            if parse_tc_to_ms(start_s) >= parse_tc_to_ms(end_s):
+                issues.append(_lint_item(tc_line_no, tc_short, tc_text, "format", t["lint_tc_order"]))
+
+        text_lines = [(ln, txt) for ln, txt in block_lines if ln > tc_line_no]
+        if not any(txt.strip() for _, txt in text_lines):
+            issues.append(_lint_item(tc_line_no, tc_short, "", "drop", t["lint_no_text"]))
+        else:
+            for ln, txt in text_lines:
+                _check_text_on_convert(ln, tc_short, txt, issues)
+
+    src_count = _count_source_srt_cues(content)
+    if src_count > 0:
+        out_count = _count_output_cues(srt_to_vtt_str(content))
+        if out_count < src_count:
+            issues.append(_lint_item(
+                1, "-", "",
+                "drop",
+                t["lint_count_mismatch"].format(src=src_count, out=out_count),
+            ))
+
+    return issues
+
+def format_lang_lint_section(lang, issues):
+    if not issues:
+        return f"{lang} (0)\n  {t['lint_none']}"
+    rows = [f"{lang} ({len(issues)})"]
+    for item in issues:
+        rows.append(f"  {item['line']} {item['tc']} - {item['content']} — {item['msg']}")
+    return "\n".join(rows)
+
+def format_combined_lint_log(sections):
+    return "\n\n".join(format_lang_lint_section(lang, issues) for lang, issues in sections)
+
+def render_lint_log(sections):
+    if not sections:
+        return
+    st.markdown(t["lint_log_title"])
+    st.code(format_combined_lint_log(sections), language=None)
+
 def validate_vtt(content):
-    if not content.strip().startswith("WEBVTT"): return False, t["err_vtt_header"]
-    if "-->" not in content: return False, t["err_tc"]
+    issues = lint_vtt_to_srt(content)
+    critical = [i for i in issues if i["kind"] in ("drop", "format")]
+    if critical:
+        first = critical[0]
+        return False, f"L{first['line']} {first['msg']}"
     return True, ""
 
 def validate_srt(content):
-    if "-->" not in content: return False, t["err_tc"]
+    issues = lint_srt_to_vtt(content)
+    critical = [i for i in issues if i["kind"] in ("drop", "format")]
+    if critical:
+        first = critical[0]
+        return False, f"L{first['line']} {first['msg']}"
     return True, ""
+
+# 하위 호환 별칭
+lint_vtt = lint_vtt_to_srt
+lint_srt = lint_srt_to_vtt
 
 # ==========================================
 # 6. Streamlit 웹 UI 구성
@@ -557,30 +849,39 @@ with tab1:
 # ----------------- TAB 2: 수동 VTT -> SRT -----------------
 with tab2:
     st.subheader(t["t2_sub"])
+    enable_lint = st.checkbox(t["t2_chk_lint"], value=True, key="t2_lint")
     uploaded_vtt = st.file_uploader(t["t2_upload"], type=['vtt'], accept_multiple_files=True)
     if uploaded_vtt:
+        lint_sections = []
         for file in uploaded_vtt:
             content = file.read().decode("utf-8")
+            lang = detect_lang_from_filename(file.name)
+            if enable_lint:
+                lint_sections.append((lang, lint_vtt_to_srt(content)))
             btn_txt = t["t2_btn_dl"].format(name=file.name.replace('.vtt', '.srt'))
-            st.download_button(btn_txt, data=vtt_to_srt_str(content), file_name=file.name.replace('.vtt', '.srt'))
+            st.download_button(btn_txt, data=vtt_to_srt_str(content), file_name=file.name.replace('.vtt', '.srt'), key=f"t2_dl_{file.name}")
+        if enable_lint:
+            render_lint_log(lint_sections)
 
 # ----------------- TAB 3: 수동 SRT -> VTT (최종) -----------------
 with tab3:
     st.subheader(t["t3_sub"])
+    enable_lint = st.checkbox(t["t3_chk_lint"], value=True, key="t3_lint")
     uploaded_srt = st.file_uploader(t["t3_upload"], type=['srt'], accept_multiple_files=True)
     if uploaded_srt:
+        lint_sections = []
         for file in uploaded_srt:
             content = file.read().decode("utf-8")
             new_name = file.name.replace('.srt', '_final.vtt')
+            lang = detect_lang_from_filename(file.name)
+            if enable_lint:
+                lint_sections.append((lang, lint_srt_to_vtt(content)))
             btn_txt = t["t3_btn_dl"].format(name=new_name)
-            st.download_button(btn_txt, data=srt_to_vtt_str(content), file_name=new_name, type="primary")
+            st.download_button(btn_txt, data=srt_to_vtt_str(content), file_name=new_name, type="primary", key=f"t3_dl_{file.name}")
+        if enable_lint:
+            render_lint_log(lint_sections)
 
 # ----------------- TAB 4: 구간 자막 교체 & 밀어넣기 -----------------
-def detect_lang_from_filename(name):
-    stem = re.sub(r'\.srt$', '', name, flags=re.IGNORECASE)
-    parts = stem.rsplit('_', 1)
-    return parts[-1] if len(parts) > 1 and parts[-1] else "unknown"
-
 with tab4:
     st.subheader(t["t4_sub"])
 
