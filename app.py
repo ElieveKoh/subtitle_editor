@@ -104,28 +104,33 @@ TEXTS = {
         "err_vtt_header": "WEBVTT 헤더 누락",
         "err_tc": "타임코드(-->) 없음",
         "lint_log_title": "##### 변환 검사 로그",
+        "lint_log_legend": "형식오류 = 파일 규격 위반 | 변환누락 = 변환 후 빠짐 | 변환변경 = 변환되나 내용·설정 달라짐 | 재생주의 = 변환은 됨, 플레이어 표시만 확인",
+        "lint_kind_format": "형식오류",
+        "lint_kind_drop": "변환누락",
+        "lint_kind_change": "변환변경",
+        "lint_kind_playback": "재생주의",
         "lint_none": "검사 항목 없음",
         "lint_ok_lang": "{lang}: 변환 시 문제 없음",
-        "lint_empty": "파일이 비어 있어 변환할 수 없음",
-        "lint_vtt_bad_header": "WEBVTT 헤더 없음",
-        "lint_no_tc": "타임코드 없음 → 변환 시 블록 누락",
-        "lint_bad_tc": "타임코드 형식 불일치",
-        "lint_tc_order": "종료 시간이 시작보다 앞섬",
+        "lint_empty": "파일이 비어 있음",
+        "lint_vtt_bad_header": "WEBVTT 헤더가 없음",
+        "lint_no_tc": "타임코드가 없어 이 블록은 변환되지 않음",
+        "lint_bad_tc": "타임코드 형식이 규격과 다름",
+        "lint_tc_order": "종료 시간이 시작 시간보다 앞섬",
         "lint_bad_index": "SRT 번호가 정수가 아님",
-        "lint_short_block": "블록 불완전 → 변환 시 누락",
-        "lint_no_text": "자막 텍스트 없음 → 빈 자막으로 변환됨",
-        "lint_orphan_block": "타임코드 없는 블록 → 변환 시 누락",
-        "lint_srt_comma": "SRT 타임코드는 쉼표(,)로 밀리초 표기",
-        "lint_vtt_dot": "VTT 타임코드는 점(.)으로 밀리초 표기",
-        "lint_digits_only": "숫자만 있음 → 재생 시 안 보일 수 있음",
-        "lint_symbols_only": "특수기호만 있음 → 빈 자막처럼 보일 수 있음",
-        "lint_text_arrow": "텍스트에 '-->' 포함 → 이후 자막 누락 가능",
-        "lint_bad_angle": "잘못된 <> 태그 → 일부만 표시될 수 있음",
-        "lint_bad_amp": "'&' 미이스케이프 → 표시 오류 가능",
-        "lint_vtt_cue_id_drop": "cue ID 줄 → SRT 변환 시 삭제됨",
-        "lint_vtt_settings_drop": "VTT 정렬/위치 설정 → SRT 변환 시 삭제됨",
-        "lint_vtt_tags_change": "VTT/HTML 태그 → SRT에서 스타일 미적용",
-        "lint_count_mismatch": "원본 {src}개 cue 중 {out}개만 변환됨 (일부 누락)",
+        "lint_short_block": "블록 구성이 부족해 변환되지 않음",
+        "lint_no_text": "자막 텍스트가 없어 빈 cue로 변환됨",
+        "lint_orphan_block": "타임코드 없는 블록은 변환되지 않음",
+        "lint_srt_comma": "SRT는 밀리초에 쉼표(,)를 써야 함 (현재 점(.) 사용)",
+        "lint_vtt_dot": "VTT는 밀리초에 점(.)을 써야 함 (현재 쉼표(,) 사용)",
+        "lint_digits_only": "숫자만 있음 (변환은 됨, 일부 플레이어에서 미표시)",
+        "lint_symbols_only": "특수기호만 있음 (변환은 됨, 화면에 거의 안 보임)",
+        "lint_text_arrow": "텍스트에 '-->'가 있어 cue 구분이 깨지고 뒤 자막이 누락될 수 있음",
+        "lint_bad_angle": "닫히지 않거나 잘못된 <> 태그 (텍스트 일부가 잘릴 수 있음)",
+        "lint_bad_amp": "'&'가 이스케이프되지 않음 (&amp; 필요, HTML 플레이어에서 깨짐)",
+        "lint_vtt_cue_id_drop": "cue ID 줄은 SRT에 포함되지 않음",
+        "lint_vtt_settings_drop": "VTT 정렬/위치 설정은 SRT에 포함되지 않음",
+        "lint_vtt_tags_change": "VTT/HTML 태그는 SRT에서 스타일이 적용되지 않음",
+        "lint_count_mismatch": "원본 {src}개 cue 중 {out}개만 변환됨",
     },
     "English": {
         "app_title": "🎬 VOD Subtitle Batch Processor & Editor",
@@ -223,28 +228,33 @@ TEXTS = {
         "err_vtt_header": "Missing WEBVTT header",
         "err_tc": "Missing timecode (-->)",
         "lint_log_title": "##### Conversion Check Log",
+        "lint_log_legend": "format = spec violation | dropped = missing after convert | changed = converted but different | playback = converts OK, check player display",
+        "lint_kind_format": "format",
+        "lint_kind_drop": "dropped",
+        "lint_kind_change": "changed",
+        "lint_kind_playback": "playback",
         "lint_none": "No issues found",
         "lint_ok_lang": "{lang}: No conversion issues",
-        "lint_empty": "File is empty — cannot convert",
+        "lint_empty": "File is empty",
         "lint_vtt_bad_header": "Missing WEBVTT header",
-        "lint_no_tc": "No timecode — block dropped on conversion",
-        "lint_bad_tc": "Invalid timecode format",
+        "lint_no_tc": "No timecode — this block is not converted",
+        "lint_bad_tc": "Timecode does not match spec",
         "lint_tc_order": "End time is before start time",
         "lint_bad_index": "SRT index is not an integer",
-        "lint_short_block": "Incomplete block — dropped on conversion",
+        "lint_short_block": "Incomplete block — not converted",
         "lint_no_text": "No subtitle text — converts as empty cue",
-        "lint_orphan_block": "Block without timecode — dropped on conversion",
-        "lint_srt_comma": "SRT timecodes must use comma (,) for milliseconds",
-        "lint_vtt_dot": "VTT timecodes must use dot (.) for milliseconds",
-        "lint_digits_only": "Digits-only text — may not display on playback",
-        "lint_symbols_only": "Symbols-only text — may appear blank",
-        "lint_text_arrow": "Text contains '-->' — may drop subsequent cues",
-        "lint_bad_angle": "Invalid <> tag — partial display possible",
-        "lint_bad_amp": "Unescaped '&' — display issues possible",
-        "lint_vtt_cue_id_drop": "Cue ID line — removed in SRT conversion",
-        "lint_vtt_settings_drop": "VTT align/position settings — removed in SRT conversion",
-        "lint_vtt_tags_change": "VTT/HTML tags — styling not applied in SRT",
-        "lint_count_mismatch": "Only {out} of {src} cues converted (some dropped)",
+        "lint_orphan_block": "Block without timecode — not converted",
+        "lint_srt_comma": "SRT requires comma (,) for ms (dot found)",
+        "lint_vtt_dot": "VTT requires dot (.) for ms (comma found)",
+        "lint_digits_only": "Digits-only (converts OK, may not show in some players)",
+        "lint_symbols_only": "Symbols-only (converts OK, nearly invisible on screen)",
+        "lint_text_arrow": "Text contains '-->' — cue parsing may break and drop later cues",
+        "lint_bad_angle": "Unclosed or invalid <> tag (text may be truncated)",
+        "lint_bad_amp": "Unescaped '&' (&amp; required, breaks in HTML players)",
+        "lint_vtt_cue_id_drop": "Cue ID line is not included in SRT",
+        "lint_vtt_settings_drop": "VTT align/position settings are not included in SRT",
+        "lint_vtt_tags_change": "VTT/HTML tags are not styled in SRT",
+        "lint_count_mismatch": "Only {out} of {src} cues converted",
     }
 }
 
@@ -478,6 +488,16 @@ VTT_TC_RE = re.compile(
 )
 VTT_TAG_RE = re.compile(r'</?(?:c|b|i|u|ruby|rt|lang|v|voice)(?:\s[^>]*)?>', re.I)
 VTT_SETTINGS_RE = re.compile(r'\s+(align|position|line|size|vertical):[^\s]*', re.I)
+LINT_KIND_KEYS = {
+    "format": "lint_kind_format",
+    "drop": "lint_kind_drop",
+    "change": "lint_kind_change",
+    "playback": "lint_kind_playback",
+}
+
+def _kind_label(kind):
+    key = LINT_KIND_KEYS.get(kind)
+    return t[key] if key else kind
 
 def _lint_item(line, tc, content, kind, msg):
     preview = (content or "").strip()
@@ -549,9 +569,9 @@ def _check_text_on_convert(line_no, tc_line, text, issues):
     if not stripped:
         return
     if stripped.isdigit():
-        issues.append(_lint_item(line_no, tc_line, text, "drop", t["lint_digits_only"]))
+        issues.append(_lint_item(line_no, tc_line, text, "playback", t["lint_digits_only"]))
     elif not re.search(r'[\w\u00C0-\uFFFF]', stripped, re.UNICODE) and re.search(r'\S', stripped):
-        issues.append(_lint_item(line_no, tc_line, text, "drop", t["lint_symbols_only"]))
+        issues.append(_lint_item(line_no, tc_line, text, "playback", t["lint_symbols_only"]))
     if '-->' in stripped:
         issues.append(_lint_item(line_no, tc_line, text, "drop", t["lint_text_arrow"]))
     if '<' in stripped:
@@ -561,7 +581,7 @@ def _check_text_on_convert(line_no, tc_line, text, issues):
         elif VTT_TAG_RE.search(stripped):
             issues.append(_lint_item(line_no, tc_line, text, "change", t["lint_vtt_tags_change"]))
     if '&' in stripped and not re.search(r'&(?:[a-zA-Z]+|#\d+|#x[0-9a-fA-F]+);', stripped):
-        issues.append(_lint_item(line_no, tc_line, text, "change", t["lint_bad_amp"]))
+        issues.append(_lint_item(line_no, tc_line, text, "playback", t["lint_bad_amp"]))
 
 def lint_vtt_to_srt(content):
     """VTT → SRT 변환 시 누락·변경·형식 불일치 항목 수집."""
@@ -688,7 +708,9 @@ def format_lang_lint_section(lang, issues):
         return f"{lang} (0)\n  {t['lint_none']}"
     rows = [f"{lang} ({len(issues)})"]
     for item in issues:
-        rows.append(f"  {item['line']} {item['tc']} - {item['content']} — {item['msg']}")
+        rows.append(
+            f"  [{_kind_label(item['kind'])}] {item['line']} {item['tc']} - {item['content']} — {item['msg']}"
+        )
     return "\n".join(rows)
 
 def format_combined_lint_log(sections):
@@ -698,6 +720,7 @@ def render_lint_log(sections):
     if not sections:
         return
     st.markdown(t["lint_log_title"])
+    st.caption(t["lint_log_legend"])
     st.code(format_combined_lint_log(sections), language=None)
 
 def validate_vtt(content):
