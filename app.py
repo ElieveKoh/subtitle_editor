@@ -305,7 +305,7 @@ TEXTS = {
 
 DOWNLOAD_LANGS = [
     'en', 'ja', 'zh-CN', 'zh-TW', 'th', 'id', 'vi', 'es', 'fr', 'pt', 'fil', 'ko',
-    'ar', 'de', 'it', 'ru', 'bn', 'hd',
+    'ar', 'de', 'it', 'ru', 'bn', 'hi',
 ]
 LANG_LABELS = {
     'en': 'en · English', 'ja': 'ja · 日本語', 'zh-CN': 'zh-CN · 中文(简体)',
@@ -313,7 +313,7 @@ LANG_LABELS = {
     'vi': 'vi · Tiếng Việt', 'es': 'es · Español', 'fr': 'fr · Français',
     'pt': 'pt · Português', 'fil': 'fil · Filipino', 'ko': 'ko · 한국어',
     'ar': 'ar · العربية', 'de': 'de · Deutsch', 'it': 'it · Italiano',
-    'ru': 'ru · Русский', 'bn': 'bn · বাংলা', 'hd': 'hd · हिन्दी',
+    'ru': 'ru · Русский', 'bn': 'bn · বাংলা', 'hi': 'hi · हिन्दी',
 }
 DEFAULT_TEAM_SHARE_LANGS = ['en', 'ja', 'zh-CN', 'ko']
 
