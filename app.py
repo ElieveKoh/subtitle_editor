@@ -320,16 +320,13 @@ DEFAULT_TEAM_SHARE_LANGS = ['en', 'ja', 'zh-CN', 'ko']
 def _lang_label(code):
     return LANG_LABELS.get(code, code)
 
-def _sync_multiselect_langs(state_key, all_langs, default_selection):
+def _init_multiselect_langs(state_key, all_langs, default_selection):
     if state_key not in st.session_state:
         st.session_state[state_key] = list(default_selection)
-        return
-    saved = st.session_state[state_key]
-    merged = [lang for lang in saved if lang in all_langs]
-    for lang in all_langs:
-        if lang not in merged:
-            merged.append(lang)
-    st.session_state[state_key] = merged
+    else:
+        st.session_state[state_key] = [
+            lang for lang in st.session_state[state_key] if lang in all_langs
+        ]
 
 # 기본 설정 및 사이드바 언어 선택기
 st.set_page_config(page_title="Subtitle Editor", layout="wide")
@@ -1090,14 +1087,14 @@ with tab1:
         t1_offset_ms = 0
 
     st.markdown("---")
-    _sync_multiselect_langs("t1_selected_langs_v3", DOWNLOAD_LANGS, DOWNLOAD_LANGS)
+    _init_multiselect_langs("t1_selected_langs_v4", DOWNLOAD_LANGS, DOWNLOAD_LANGS)
     selected_langs = st.multiselect(
-        t["t1_lang_label"], DOWNLOAD_LANGS, format_func=_lang_label, key="t1_selected_langs_v3",
+        t["t1_lang_label"], DOWNLOAD_LANGS, format_func=_lang_label, key="t1_selected_langs_v4",
     )
 
-    _sync_multiselect_langs("t1_team_share_langs_v3", DOWNLOAD_LANGS, DEFAULT_TEAM_SHARE_LANGS)
+    _init_multiselect_langs("t1_team_share_langs_v4", DOWNLOAD_LANGS, DEFAULT_TEAM_SHARE_LANGS)
     team_share_langs = st.multiselect(
-        t["t1_team_share_label"], DOWNLOAD_LANGS, format_func=_lang_label, key="t1_team_share_langs_v3",
+        t["t1_team_share_label"], DOWNLOAD_LANGS, format_func=_lang_label, key="t1_team_share_langs_v4",
     )
 
     if st.button(t["t1_btn_run"], type="primary"):
