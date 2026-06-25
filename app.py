@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import re
 import io
+import html
 import zipfile
 
 # ==========================================
@@ -92,6 +93,7 @@ TEXTS = {
         "val_has_required": "수정 필요 항목이 있습니다. 아래 자동 수정을 켜거나 원본을 고친 뒤 다운로드하세요.",
         "val_fix_required_title": "##### 🔴 수정 필요 항목 자동 수정",
         "val_fix_optional_title": "##### 🔵 참고 항목 자동 수정 (선택)",
+        "val_no_autofix": "자동 수정 가능한 검사 항목이 없습니다.",
         "t4_sub": "✂️ SRT 특정 구간 밀어내기 & 새 자막 삽입",
         "t4_info": "지정한 시간 사이에 있는 자막을 비우고, 새로 입력한 텍스트들을 엔터(줄바꿈) 기준으로 자동 분배하여 넣습니다. (나머지 뒤쪽 자막들의 번호와 시간은 밀리지 않고 유지됩니다)",
         "t4_upload": "수정할 원본 SRT 파일 업로드",
@@ -144,7 +146,8 @@ TEXTS = {
         "val_unescaped_entity": "& 미이스케이프 (HTML 플레이어)",
         "val_empty_text": "자막 텍스트 없음 (빈 cue)",
         "val_timestamp_conflict": "텍스트에 '-->' 포함 (파싱 깨짐)",
-        "val_summary": "{total}건 (수정 필요 {req} / 참고 {opt})",
+        "val_expander_none": "{lang} — 문제 없음",
+        "val_expander_count": "{lang} — {total}건 (수정 {req} / 참고 {opt})",
         "val_legend": "🔴 **수정 필요** = 형식 위반, 변환·재생 오류 가능 · 🔵 **참고** = 규격상 허용, 변환 시에만 영향",
         "val_required_header": "🔴 수정 필요",
         "val_optional_header": "🔵 참고 (수정 안 해도 됨)",
@@ -286,7 +289,8 @@ TEXTS = {
         "val_unescaped_entity": "Unescaped & (HTML players)",
         "val_empty_text": "Empty cue text",
         "val_timestamp_conflict": "'-->' in text (breaks parsing)",
-        "val_summary": "{total} issue(s) (required {req} / optional {opt})",
+        "val_expander_none": "{lang} — no issues",
+        "val_expander_count": "{lang} — {total} issue(s) (required {req} / optional {opt})",
         "val_legend": "🔴 **Required** = format violation, may break convert/playback · 🔵 **Optional** = allowed by spec, convert-only impact",
         "val_required_header": "🔴 Required fixes",
         "val_optional_header": "🔵 Optional notes (can skip)",
@@ -295,8 +299,37 @@ TEXTS = {
         "val_has_required": "Required fixes pending. Enable auto-fix below or edit the source before download.",
         "val_fix_required_title": "##### 🔴 Auto-fix required issues",
         "val_fix_optional_title": "##### 🔵 Auto-fix optional notes",
+        "val_no_autofix": "No auto-fixable issues detected.",
     }
 }
+
+DOWNLOAD_LANGS = [
+    'en', 'ja', 'zh-CN', 'zh-TW', 'th', 'id', 'vi', 'es', 'fr', 'pt', 'fil', 'ko',
+    'ar', 'de', 'it', 'ru', 'bn', 'hd',
+]
+LANG_LABELS = {
+    'en': 'en · English', 'ja': 'ja · 日本語', 'zh-CN': 'zh-CN · 中文(简体)',
+    'zh-TW': 'zh-TW · 中文(繁體)', 'th': 'th · ไทย', 'id': 'id · Indonesia',
+    'vi': 'vi · Tiếng Việt', 'es': 'es · Español', 'fr': 'fr · Français',
+    'pt': 'pt · Português', 'fil': 'fil · Filipino', 'ko': 'ko · 한국어',
+    'ar': 'ar · العربية', 'de': 'de · Deutsch', 'it': 'it · Italiano',
+    'ru': 'ru · Русский', 'bn': 'bn · বাংলা', 'hd': 'hd · हिन्दी',
+}
+DEFAULT_TEAM_SHARE_LANGS = ['en', 'ja', 'zh-CN', 'ko']
+
+def _lang_label(code):
+    return LANG_LABELS.get(code, code)
+
+def _sync_multiselect_langs(state_key, all_langs, default_selection):
+    if state_key not in st.session_state:
+        st.session_state[state_key] = list(default_selection)
+        return
+    saved = st.session_state[state_key]
+    merged = [lang for lang in saved if lang in all_langs]
+    for lang in all_langs:
+        if lang not in merged:
+            merged.append(lang)
+    st.session_state[state_key] = merged
 
 # 기본 설정 및 사이드바 언어 선택기
 st.set_page_config(page_title="Subtitle Editor", layout="wide")
@@ -724,6 +757,32 @@ def _ui_fixes_to_internal(ui, fmt):
         'remove_empty': ui.get('fix_remove_invalid', False),
     }
 
+RULE_TO_FIX = {
+    "bad_timestamp": {"fix_timestamp"},
+    "bad_timestamp_order": {"fix_timestamp"},
+    "bad_cue_id": {"fix_vtt_extra"},
+    "bad_cue_settings": {"fix_vtt_extra"},
+    "unescaped_entity": {"fix_entities"},
+    "bad_markup": {"fix_markup"},
+    "timestamp_conflict": {"fix_markup"},
+    "no_timestamp": {"fix_remove_invalid"},
+    "bad_block": {"fix_remove_invalid"},
+    "empty_text": {"fix_remove_invalid"},
+}
+REQUIRED_FIX_IDS = {"fix_timestamp"}
+
+def fixes_needed_from_sections(sections, fmt):
+    rules = set()
+    for section in sections:
+        for f in section[1]:
+            rules.add(f["rule"])
+    needed = set()
+    for rule in rules:
+        needed.update(RULE_TO_FIX.get(rule, ()))
+    if fmt != "vtt":
+        needed.discard("fix_vtt_extra")
+    return needed
+
 def _get_fix_option_defs(fmt):
     required = [("fix_timestamp", "val_fix_timestamp", True)]
     optional = [
@@ -804,52 +863,85 @@ def apply_subtitle_fixes(content, fmt, ui_fixes):
         idx += 1
     return '\n'.join(out)
 
-def render_fix_options(fmt, key_prefix):
+def render_fix_options(fmt, key_prefix, needed_fix_ids):
     fixes = {}
     required_defs, optional_defs = _get_fix_option_defs(fmt)
-    st.markdown(t["val_fix_required_title"])
-    for fix_id, label_key, default in required_defs:
-        fixes[fix_id] = st.checkbox(t[label_key], value=default, key=f"{key_prefix}_fix_{fix_id}")
-    st.markdown(t["val_fix_optional_title"])
-    col1, col2 = st.columns(2)
-    for i, (fix_id, label_key, default) in enumerate(optional_defs):
-        with col1 if i % 2 == 0 else col2:
-            fixes[fix_id] = st.checkbox(t[label_key], value=default, key=f"{key_prefix}_fix_{fix_id}")
+    req_show = [d for d in required_defs if d[0] in needed_fix_ids]
+    opt_show = [d for d in optional_defs if d[0] in needed_fix_ids]
+
+    if req_show:
+        st.markdown(t["val_fix_required_title"])
+        for fix_id, label_key, default in req_show:
+            fixes[fix_id] = st.checkbox(t[label_key], value=True, key=f"{key_prefix}_fix_{fix_id}")
+    if opt_show:
+        st.markdown(t["val_fix_optional_title"])
+        col1, col2 = st.columns(2)
+        for i, (fix_id, label_key, default) in enumerate(opt_show):
+            with col1 if i % 2 == 0 else col2:
+                fixes[fix_id] = st.checkbox(t[label_key], value=True, key=f"{key_prefix}_fix_{fix_id}")
     return fixes
 
 def _render_finding_row(f):
     tag = t["val_tag_required"] if f["severity"] == "required" else t["val_tag_optional"]
     icon = "🔴" if f["severity"] == "required" else "🔵"
-    st.markdown(f"{icon} **L{f['line']}** · **{tag}** · `{f['rule']}` — {_rule_label(f['rule'])}")
+    label = html.escape(_rule_label(f["rule"]))
+    head = f'{icon} <b>L{f["line"]}</b> · <b>{html.escape(tag)}</b> · <code>{html.escape(f["rule"])}</code> — {label}'
+    body_parts = []
     if f["tc"] != "-":
-        st.code(f["tc"], language=None)
+        body_parts.append(f'<div class="val-tc">{html.escape(f["tc"])}</div>')
     if f["text"]:
-        st.markdown(f"> {f['text']}")
+        body_parts.append(f'<div class="val-text">{html.escape(f["text"])}</div>')
+    body = "".join(body_parts)
+    st.markdown(
+        f'<div class="val-item"><div class="val-head">{head}</div>{body}</div>',
+        unsafe_allow_html=True,
+    )
 
-def render_lint_results(sections):
+def _val_results_css():
+    st.markdown(
+        """<style>
+        .val-item { margin: 0 0 0.35rem 0; padding: 0; }
+        .val-head { font-size: 0.88rem; line-height: 1.35; margin: 0 0 0.2rem 0; }
+        .val-tc { margin: 0 0 0.1rem 0.6rem; padding: 0.15rem 0.4rem; font-size: 0.82rem;
+            font-family: monospace; background: #f6f6f6; border-radius: 3px; display: inline-block; }
+        .val-text { margin: 0 0 0 0.6rem; padding: 0.1rem 0 0.1rem 0.45rem; font-size: 0.88rem;
+            border-left: 2px solid #ccc; line-height: 1.3; }
+        .val-sec { margin: 0.25rem 0 0.15rem; font-size: 0.9rem; font-weight: 600; }
+        </style>""",
+        unsafe_allow_html=True,
+    )
+
+def _expander_label(lang, findings):
+    if not findings:
+        return t["val_expander_none"].format(lang=lang)
+    req = sum(1 for f in findings if f["severity"] == "required")
+    opt = len(findings) - req
+    return t["val_expander_count"].format(lang=lang, total=len(findings), req=req, opt=opt)
+
+def render_lint_results(sections, key_prefix="val"):
     if not sections:
         return
     st.markdown(t["val_title"])
     st.caption(t["val_legend"])
+    _val_results_css()
     any_required = False
-    for lang, findings in sections:
-        with st.container(border=True):
-            req = [f for f in findings if f["severity"] == "required"]
-            opt = [f for f in findings if f["severity"] == "optional"]
-            if findings:
-                st.markdown(f"#### {lang} · {t['val_summary'].format(total=len(findings), req=len(req), opt=len(opt))}")
-            else:
-                st.markdown(f"#### {lang}")
+    for i, section in enumerate(sections):
+        lang = section[0]
+        findings = section[1]
+        uid = section[2] if len(section) > 2 else str(i)
+        req = [f for f in findings if f["severity"] == "required"]
+        if req:
+            any_required = True
+        with st.expander(_expander_label(lang, findings), expanded=False):
             if not findings:
-                st.success(t["val_ok"])
                 continue
             if req:
-                any_required = True
-                st.markdown(f"**{t['val_required_header']}** ({len(req)})")
+                st.markdown(f'<p class="val-sec">{t["val_required_header"]} ({len(req)})</p>', unsafe_allow_html=True)
                 for f in req:
                     _render_finding_row(f)
+            opt = [f for f in findings if f["severity"] == "optional"]
             if opt:
-                st.markdown(f"**{t['val_optional_header']}** ({len(opt)})")
+                st.markdown(f'<p class="val-sec">{t["val_optional_header"]} ({len(opt)})</p>', unsafe_allow_html=True)
                 for f in opt:
                     _render_finding_row(f)
     if any_required:
@@ -873,11 +965,15 @@ def run_manual_convert_tab(tab_key, upload_label, upload_types, src_fmt, validat
             'content': f.read().decode('utf-8'),
         })
 
+    sections = [(fd['lang'], validate_fn(fd['content']), fd['name']) for fd in files]
     if enable_lint:
-        render_lint_results([(fd['lang'], validate_fn(fd['content'])) for fd in files])
+        render_lint_results(sections, key_prefix=tab_key)
 
-    st.markdown("---")
-    fixes = render_fix_options(src_fmt, tab_key)
+    needed_fixes = fixes_needed_from_sections(sections, src_fmt)
+    fixes = {}
+    if needed_fixes:
+        st.markdown("---")
+        fixes = render_fix_options(src_fmt, tab_key, needed_fixes)
 
     outputs = []
     for fd in files:
@@ -994,11 +1090,15 @@ with tab1:
         t1_offset_ms = 0
 
     st.markdown("---")
-    default_langs =['en', 'ja', 'zh-CN', 'zh-TW', 'th', 'id', 'vi', 'es', 'fr', 'pt', 'fil', 'ko', 'ar', 'de', 'it', 'ru']
-    selected_langs = st.multiselect(t["t1_lang_label"], default_langs, default=default_langs)
+    _sync_multiselect_langs("t1_selected_langs_v3", DOWNLOAD_LANGS, DOWNLOAD_LANGS)
+    selected_langs = st.multiselect(
+        t["t1_lang_label"], DOWNLOAD_LANGS, format_func=_lang_label, key="t1_selected_langs_v3",
+    )
 
-    default_team_share_langs =['en', 'ja', 'zh-CN', 'ko']
-    team_share_langs = st.multiselect(t["t1_team_share_label"], default_langs, default=default_team_share_langs)
+    _sync_multiselect_langs("t1_team_share_langs_v3", DOWNLOAD_LANGS, DEFAULT_TEAM_SHARE_LANGS)
+    team_share_langs = st.multiselect(
+        t["t1_team_share_label"], DOWNLOAD_LANGS, format_func=_lang_label, key="t1_team_share_langs_v3",
+    )
 
     if st.button(t["t1_btn_run"], type="primary"):
         valid_links =[(u.strip(), p.strip()) for u, p in links_data if u.strip() and p.strip()]
